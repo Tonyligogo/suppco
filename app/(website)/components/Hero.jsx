@@ -1,0 +1,56 @@
+import { Button } from '@/components/ui/button'
+import Image from 'next/image'
+import React from 'react'
+import HeroImage from '@/public/hero-bg-2.jpg';
+
+const Hero = () => {
+  return (
+    <section className='relative h-[calc(100vh+20vh)] 2xl:h-[80vh] mt-18 w-full text-white overflow-hidden'>
+          <div className='absolute inset-0'>
+          <Image src={HeroImage} alt='heavy machinery carrying ballast' width={1500} height={1500} className='w-full h-full object-cover object-center absolute inset-0'/>
+          <div className="absolute inset-0 bg-black/80" />
+          <div className="relative z-10 flex h-full items-center justify-center md:max-w-7xl md:mx-auto px-4">
+            <div>
+            <div className='max-w-4xl text-white text-center space-y-5'>
+            <p className='font-semibold text-sm'>DIGITISE YOUR CONSTRUCTION SUPPLY CHAIN</p>
+              <p className='text-3xl md:text-5xl lg:text-6xl font-bold'>Get <span className='hidden md:inline-block'>construction</span> materials.</p>
+              <p className='text-3xl md:text-5xl lg:text-6xl font-bold'>From any supplier.</p>
+              <p className='text-3xl md:text-5xl lg:text-6xl font-bold'>In a single platform.</p>
+            </div>
+              <div className="flex flex-col md:flex-row justify-center gap-5 my-20">
+                <Button 
+                  size="lg"
+                  className="font-semibold text-lg px-8 py-3"
+                >
+                  Join as a Contractor
+                </Button>
+                <Button 
+                variant='outline'
+                  size="lg"
+                  className="text-black text-lg font-semibold px-8 py-3"
+                >
+                  Join as a Supplier
+                </Button>
+              </div>
+              <div className='grid grid-cols-1 lg:grid-cols-3 gap-10'>
+                <div className='bg-white/10 backdrop-blur rounded-lg p-4'>
+                    <span className='text-2xl font-bold block'>200+ Suppliers</span>
+                    <span>onboarded</span>
+                </div>
+                <div className='bg-white/10 backdrop-blur rounded-lg p-4'>
+                    <span className='text-2xl font-bold block'>1k+ assets/materials</span>
+                    <span>verified</span>
+                </div>
+                <div className='bg-white/10 backdrop-blur rounded-lg p-4'>
+                    <span className='text-2xl font-bold block'>500+ Contractors</span>
+                    <span>trust us</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+    </section>
+  )
+}
+
+export default Hero
