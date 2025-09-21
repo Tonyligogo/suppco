@@ -4,13 +4,6 @@ import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Form,
   FormControl,
   FormField,
@@ -21,11 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Loader2, ArrowLeft } from "lucide-react";
 import contractorImage from "@/public/hero-bg-2.jpg";
-import Logo from "@/public/logo.png";
 import supplierImage from "@/public/hero-bg.jpg";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import Image from "next/image";
 
 const signupFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -86,64 +77,32 @@ export const SignupFormStep = ({ accountType, onBack, onSuccess }) => {
     signupMutation.mutate(data);
   };
 
-  const heroImage =
-    accountType === "contractor" ? contractorImage : supplierImage;
   const accountTypeLabel =
     accountType === "contractor" ? "Contractor" : "Supplier";
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left side - Hero Image */}
-      <div className="hidden lg:flex lg:w-1/2 relative">
-        <Image
-          src={heroImage}
-          alt={`${accountTypeLabel} image`}
-          width={1500}
-          height={1500}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
-        <div className="absolute bottom-8 left-8 text-white">
-          <h2 className="text-3xl font-bold mb-2">
-            Join as a {accountTypeLabel}
-          </h2>
-          <p className="text-lg opacity-90">
-            {accountType === "contractor"
-              ? "Connect with reliable suppliers for your projects"
-              : "Showcase your services to quality contractors"}
-          </p>
-        </div>
-      </div>
-
-      {/* Right side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
-        <div className="w-full max-w-md space-y-10">
-          <Image
-            src={Logo}
-            alt="Suppco"
-            width={250}
-            height={150}
-            className="mx-auto"
-          />
-          <Card className="shadow-elegant border-border/50">
-            <CardHeader className="space-y-2">
-              <Button
-                variant="ghost"
-                onClick={onBack}
-                className="w-fit h-auto text-muted-foreground hover:text-black"
-              >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
-              </Button>
-              <CardTitle className="text-2xl font-bold">
-                Create your {accountTypeLabel.toLowerCase()} account
-              </CardTitle>
-              <CardDescription className="text-muted-foreground">
-                Fill in your details to get started
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <Form {...form}>
+     <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+              <div className="flex w-full max-w-lg flex-col gap-6">
+                <div className="flex flex-col items-center ">
+                  <a href="/" className="font-bold text-3xl">
+                    Suppco
+                  </a>
+                  <p className="mt-3 text-xl font-semibold text-muted-foreground">
+                    Welcome To Suppco
+                  </p>
+                  <p className="text-muted-foreground">Please sign up to continue</p>
+                </div>
+                <div className="border rounded-lg p-6">
+                  <button
+                  onClick={onBack}
+                  className="flex items-center w-fit h-auto text-muted-foreground hover:text-black"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back
+                </button>
+                <p className="text-2xl font-bold text-center">Create your {accountTypeLabel.toLowerCase()} account</p>
+                <div className="mt-6">
+                <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-4"
@@ -154,9 +113,9 @@ export const SignupFormStep = ({ accountType, onBack, onSuccess }) => {
                       name="firstName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>First Name</FormLabel>
+                          <FormLabel className='text-lg font-normal'>First name</FormLabel>
                           <FormControl>
-                            <Input placeholder="John" {...field} />
+                            <Input placeholder='First name' {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -167,9 +126,9 @@ export const SignupFormStep = ({ accountType, onBack, onSuccess }) => {
                       name="lastName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Last Name</FormLabel>
+                          <FormLabel className='text-lg font-normal'>Last name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Doe" {...field} />
+                            <Input placeholder='Last name' {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -182,11 +141,11 @@ export const SignupFormStep = ({ accountType, onBack, onSuccess }) => {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel className='text-lg font-normal'>Email</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="john.doe@example.com"
                             type="email"
+                            placeholder='example@gmail.com'
                             {...field}
                           />
                         </FormControl>
@@ -200,11 +159,11 @@ export const SignupFormStep = ({ accountType, onBack, onSuccess }) => {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel className='text-lg font-normal'>Password</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Enter your password"
                             type="password"
+                            placeholder='********'
                             {...field}
                           />
                         </FormControl>
@@ -234,7 +193,7 @@ export const SignupFormStep = ({ accountType, onBack, onSuccess }) => {
                 </form>
               </Form>
 
-              <div className="text-center text-sm text-muted-foreground">
+              <div className="text-center text-sm mt-3 text-muted-foreground">
                 Already have an account?{" "}
                 <Link
                   href="/login"
@@ -243,10 +202,9 @@ export const SignupFormStep = ({ accountType, onBack, onSuccess }) => {
                   Sign in
                 </Link>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
+                </div>
+                </div>
+              </div>
+            </div>
   );
 };

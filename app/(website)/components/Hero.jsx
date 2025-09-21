@@ -5,7 +5,7 @@ import HeroImage from '@/public/hero-bg-2.jpg';
 
 const Hero = () => {
   return (
-    <section className='relative h-[calc(100vh+20vh)] 2xl:h-[80vh] mt-18 w-full text-white overflow-hidden'>
+    <section className='relative h-[calc(100vh+20vh)] 2xl:h-[80vh] w-full text-white overflow-hidden'>
           <div className='absolute inset-0'>
           <Image src={HeroImage} alt='heavy machinery carrying ballast' width={1500} height={1500} className='w-full h-full object-cover object-center absolute inset-0'/>
           <div className="absolute inset-0 bg-black/80" />

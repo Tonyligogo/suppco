@@ -4,18 +4,13 @@ import React from 'react'
 import Avatar from '@/public/avatar.jpg'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
+import Header from '@/components/custom/Header'
 
 const Account = () => {
   return (
-    <div className='h-[100svh] flex flex-col justify-between'>
+    <div className='flex flex-col justify-between border p-6 rounded-xl'>
         <div>
-            <div className='flex items-center justify-between'>
-                <button className='bg-white'>
-                <ArrowLeft />
-                </button>
-                <h1 className='text-2xl font-semibold'>Account</h1>
-                <p></p>
-            </div>
+            <Header title='General' description='Update your accoutn settings.' />
             <div className='rounded-full overflow-hidden w-fit mx-auto mt-8'>
                 <Image src={Avatar} alt='avatar' width={150} height={150} />
             </div>

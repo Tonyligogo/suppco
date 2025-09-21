@@ -7,7 +7,7 @@ export const AccountTypeSelector = ({
   onValueChange,
 }) => {
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-6">
       <Card
         className={cn(
           "cursor-pointer transition-all duration-200 hover:shadow-md border-2",
