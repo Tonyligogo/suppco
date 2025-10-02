@@ -13,10 +13,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2, ArrowLeft } from "lucide-react";
-import contractorImage from "@/public/hero-bg-2.jpg";
-import supplierImage from "@/public/hero-bg.jpg";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { signUpUser } from "@/app/api/auth/signup";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const signupFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -25,34 +26,27 @@ const signupFormSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
-const signupUser = async (data) => {
-  const endpoint =
-    data.accountType === "contractor"
-      ? "/api/auth/signup/contractor"
-      : "/api/auth/signup/supplier";
+const invalidPasswordRegex = /^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[a-zA-Z0-9]*)$/;
+  function isPasswordValid(password) {
+    return !invalidPasswordRegex.test(password); // invert the check
+  }
 
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      firstName: data.firstName,
+const signUp = async (data) => {
+  const finalData = {
+    firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       password: data.password,
-    }),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Failed to create account");
   }
-
-  return response.json();
+  try {
+    const res = await signUpUser(data.accountType, finalData);
+    return res;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const SignupFormStep = ({ accountType, onBack, onSuccess }) => {
+export const SignupFormStep = ({ accountType, onBack }) => {
   const form = useForm({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -62,18 +56,30 @@ export const SignupFormStep = ({ accountType, onBack, onSuccess }) => {
       password: "",
     },
   });
+  const [invalidPassword, setInvalidPassword] = useState('');
+  const router = useRouter();
 
   const signupMutation = useMutation({
-    mutationFn: (data) => signupUser({ ...data, accountType }),
+    mutationFn: (data) => signUp({ ...data, accountType }),
     onSuccess: () => {
-      onSuccess(form.getValues("email"));
+      toast.success("Account created successfully! Please verify your email.");
+      router.push("/account/verification");
     },
-    onError: () => {
-      toast.error("Registration failed. Please try again!");
+    onError: (error) => {
+      console.log(error);
+      const errorMessage = error?.response?.data?.message || "An error occurred during signup.";
+    toast.error(errorMessage);
     },
   });
 
   const onSubmit = (data) => {
+    if (!isPasswordValid(data.password)) {
+      setInvalidPassword('Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.');
+      setTimeout(() => {
+        setInvalidPassword('');
+      }, 5000);
+      return;
+    }
     signupMutation.mutate(data);
   };
 
@@ -171,6 +177,8 @@ export const SignupFormStep = ({ accountType, onBack, onSuccess }) => {
                       </FormItem>
                     )}
                   />
+                {invalidPassword && <p className="text-sm text-red-500 mb-2">{invalidPassword}</p>}
+
 
                   <Button
                     type="submit"

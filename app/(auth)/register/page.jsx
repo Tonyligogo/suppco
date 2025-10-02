@@ -1,12 +1,10 @@
 'use client';
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SignupFormStep } from "./components/SignupFormStep";
 import { AccountTypeStep } from "./components/AccountTypeStep";
 
 
 const Signup = () => {
-  const router = useRouter();
   const [currentStep, setCurrentStep] = useState("account-type");
   const [selectedAccountType, setSelectedAccountType] = useState('');
 
@@ -20,16 +18,11 @@ const Signup = () => {
     setCurrentStep("account-type");
   };
 
-  const handleSignupSuccess = () => {
-    router.push("/verification");
-  };
-
   if (currentStep === "form" && selectedAccountType) {
     return (
       <SignupFormStep
         accountType={selectedAccountType}
         onBack={handleBack}
-        onSuccess={handleSignupSuccess}
       />
     );
   }
