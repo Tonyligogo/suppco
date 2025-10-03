@@ -57,7 +57,7 @@ export default function Navbar() {
               <span className="font-semibold">0710507872</span>
             </li>
             <li>
-              <a href="#login" className="hover:text-gray-600">
+              <a href="/login" className="hover:text-gray-600">
                 Login
               </a>
             </li>
@@ -77,7 +77,7 @@ export default function Navbar() {
                   <a href="#supplier">Be a supplier</a>
                   <a href="#contractor">Be a contractor</a>
                   <a href="#benefits">Benefits</a>
-                  <a href="#login">Login</a>
+                  <a href="/login">Login</a>
                   <Button className="w-full">Get started</Button>
                   <div className="flex items-center gap-2">
                     <Phone size={18} />
