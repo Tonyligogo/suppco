@@ -25,7 +25,7 @@ export default function Login() {
         toast.error("Invalid email or password");
       }else{
         toast.success("Login successful!");
-        console.log('login data',response.data);
+        console.log('login data',response);
 
         router.push("/dashboard/admin/1");
       }
