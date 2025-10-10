@@ -33,7 +33,7 @@ const CallToAction1 = () => {
                     <p className='text-xl lg:text-2xl font-semibold mb-4' >Talk to Us</p>
                     <p>Our support team is available to help you with anything you need, 24/7.</p>
                 </div>
-                <Link href='/contact-us' className='py-2 bg-primary text-white rounded-md flex items-center justify-center lg:text-lg font-normal gap-3 '>Contact Us <ChevronRight size={24} color='#fff' /> </Link>
+                <Link href='#' className='py-2 bg-primary text-white rounded-md flex items-center justify-center lg:text-lg font-normal gap-3 '>Contact Us <ChevronRight size={24} color='#fff' /> </Link>
             </div>
         </div>
     </section>

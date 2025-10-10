@@ -53,7 +53,7 @@ const Suppliers = () => {
                   </div>
               ))}
           </div>
-          <Button size='lg' className='flex items-center text-lg font-semibold gap-3 rounded mx-auto'>Start Supplying Today <ChevronRight size={24} /> </Button>
+          <Button size='lg' className='flex items-center text-lg font-semibold mx-auto'>Join us today <ChevronRight size={24} /> </Button>
       </section>
     </div>
   )

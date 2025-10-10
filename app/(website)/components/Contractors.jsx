@@ -51,7 +51,7 @@ const Contractors = () => {
                 </div>
             ))}
         </div>
-        <Button size='lg' className='flex items-center bg-primary text-lg font-semibold gap-3 rounded mx-auto'>Find Materials Now <ChevronRight size={24} /> </Button>
+        <Button size='lg' className='flex items-center bg-primary text-lg font-semibold mx-auto'>Find materials now <ChevronRight size={24} /> </Button>
     </section>
   )
 }

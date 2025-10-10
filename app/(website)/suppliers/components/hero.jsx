@@ -94,7 +94,7 @@ export default function HeroSection() {
             <p className="md:text-lg">{content.boxP}</p>
             
             {/* Secondary CTA Link */}
-            <Link href={content.ctaLink} className="bg-gray-200 block w-fit mt-8 font-semibold text-primary py-3 px-6 rounded">
+            <Link href={content.ctaLink} className="bg-white block w-fit mt-8 font-semibold text-primary py-3 px-6 rounded">
               {content.boxLinkText}
             </Link>
           </div>

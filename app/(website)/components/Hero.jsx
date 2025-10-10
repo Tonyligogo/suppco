@@ -11,11 +11,11 @@ const Hero = () => {
           <div className="absolute inset-0 bg-gray-900/90" />
           <div className="relative z-10 flex h-full items-center justify-center md:max-w-7xl md:mx-auto px-4">
             <div>
-            <div className='max-w-4xl text-white text-center space-y-5'>
-            <p className='font-semibold text-sm'>DIGITISE YOUR CONSTRUCTION SUPPLY CHAIN</p>
-              <p className='text-3xl md:text-5xl lg:text-6xl font-bold'>Get <span className='hidden md:inline-block'>construction</span> materials.</p>
-              <p className='text-3xl md:text-5xl lg:text-6xl font-bold'>From any supplier.</p>
-              <p className='text-3xl md:text-5xl lg:text-6xl font-bold'>In a single platform.</p>
+            <div className='max-w-4xl text-white md:text-center space-y-5'>
+            <p className='hidden md:block font-semibold text-sm'>DIGITISE YOUR CONSTRUCTION SUPPLY CHAIN</p>
+              <p className='text-4xl md:text-5xl lg:text-6xl font-bold'>Get <span className='hidden md:inline-block'>construction</span> materials.</p>
+              <p className='text-4xl md:text-5xl lg:text-6xl font-bold'>From any supplier.</p>
+              <p className='text-4xl md:text-5xl lg:text-6xl font-bold'>In one platform.</p>
             </div>
               <div className="flex flex-col md:flex-row justify-center gap-5 my-20">
                 <Button 
@@ -32,7 +32,7 @@ const Hero = () => {
                   Join as a Supplier
                 </Button>
               </div>
-              <div className='grid grid-cols-1 lg:grid-cols-3 gap-10'>
+              <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-10'>
                 <div className='bg-white/10 backdrop-blur rounded-lg p-4'>
                     <span className='text-2xl font-bold block'>200+ Suppliers</span>
                     <span>onboarded</span>

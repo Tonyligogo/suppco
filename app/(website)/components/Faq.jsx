@@ -143,7 +143,7 @@ export default function FAQSection() {
              "We've answered some of the most common questions about our platform."}
             Can't find what you're looking for? Reach out to our team anytime.
           </p>
-          <Button size='lg' className='font-semibold rounded text-lg'>Contact Support</Button>
+          <Button size='lg' className='font-semibold text-lg'>Contact Support</Button>
         </div>
 
         {/* Right Side Accordions */}

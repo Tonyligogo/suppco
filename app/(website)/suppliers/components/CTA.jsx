@@ -2,7 +2,7 @@ import Link from "next/link"
 
 const SupplierCTA = () => {
   return (
-    <div className="container px-6">
+    <div className="container py-16 px-6">
         <h2 className="text-3xl md:text-5xl font-bold mb-6 text-center">
           Ready to sell?
         </h2>

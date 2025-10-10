@@ -38,7 +38,7 @@ export default function Testimonials() {
             {testimonials.map((t, index) => (
             <div
               key={index}
-              className="min-w-[300px] flex-shrink-0 border rounded-2xl shadow p-6 flex flex-col text-left"
+              className="w-[300px] md:min-w-[300px] flex-shrink-0 border rounded-2xl shadow p-6 flex flex-col text-left"
             >
               {/* User Info */}
               <div className="mb-4">

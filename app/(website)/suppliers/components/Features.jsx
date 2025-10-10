@@ -103,7 +103,7 @@ export default function Features() {
         : "An innovative digital marketplace designed to connect top-tier suppliers like you directly with high-volume contractors, maximizing your profitability.";
   return (
     <section className="container bg-white">
-    <div className=" px-6">
+    <div>
         <h2 className="text-3xl md:text-5xl text-gray-800 font-bold mb-6 text-center">
             {title}
         </h2>
