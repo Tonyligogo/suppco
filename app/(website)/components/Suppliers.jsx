@@ -3,32 +3,32 @@ import { ChartArea, ChevronRight, Handshake, ToolCase, UsersRound, Wallet, Wareh
 
 export const suppliersBenefits = [
     {
-      icon: <ToolCase />,
+      icon: <ToolCase/>,
       heading: "Showcase Your Products",
       description: "Create a digital storefront where contractors can easily browse and order your materials.",
     },
     {
-      icon: <Warehouse />,
+      icon: <Warehouse/>,
       heading: "Manage Multiple Branches",
       description: "List products by branch, track inventory per location, and ensure contractors always see real-time availability.",
     },
     {
-      icon: <UsersRound />,
+      icon: <UsersRound/>,
       heading: "Invite & Empower Your Team",
       description: "Add employees, assign roles, and give branch managers control over daily operations.",
     },
     {
-      icon: <ChartArea />,
+      icon: <ChartArea/>,
       heading: "Gain Insights & Analytics",
       description: "See which products are in demand, track orders, and monitor branch performance with easy dashboards.",
     },
     {
-      icon: <Wallet />,
+      icon: <Wallet/>,
       heading: "Simplify Payments",
       description: "Get paid securely and on time, through Mpesa or your bank.",
     },
     {
-      icon: <Handshake />,
+      icon: <Handshake/>,
       heading: "Connect with Contractors",
       description: "Reach verified contractors actively looking for materials, boosting sales and building long-term partnerships.",
     },
@@ -37,26 +37,6 @@ export const suppliersBenefits = [
 
 const Suppliers = () => {
   return (
-    // <section className="relative bg-[url(/hero-bg.jpg)] bg-cover bg-no-repeat bg-bottom py-20">
-    //     <div className="absolute top-0 bottom-0 w-[100vw] bg-black/80" />
-    //     <div className="relative z-10 text-white max-w-[80vw] mx-auto flex gap-10">
-    //         <div className='max-w-2xl mb-20 space-y-6'>
-    //             <p className='font-bold text-lg'>Why Suppliers Love Our Platform</p>
-    //             <p className='text-4xl font-bold leading-snug'>Expand your reach & <br /> streamline your operations.</p>
-    //             <p className='text-lg'>Our platform helps suppliers grow faster with tools designed for construction supply businesses, connect directly with contractors who need your materials</p>
-    //             <Button variant='outline' className='flex items-center text-lg font-semibold gap-3 rounded text-black'>Get started <ChevronRight size={24} /> </Button>
-    //         </div>
-    //         <div className="grid grid-cols-3 gap-6">
-    //             {suppliersBenefits.map((benefit, index)=>(
-    //                 <div key={index} className="bg-white/10 backdrop-blur rounded-lg p-6">
-    //                     <span className="bg-white size-8 text-lg rounded-full grid place-content-center">{benefit.icon}</span>
-    //                     <p className="text-xl font-semibold my-4">{benefit.heading}</p>
-    //                     <p>{benefit.description}</p>
-    //                 </div>
-    //             ))}
-    //         </div>
-    //     </div>
-    // </section>
     <div className="bg-gray-50 py-10 lg:py-20">
       <section className="container my-0">
           <div className='max-w-3xl mx-auto text-center space-y-6'>

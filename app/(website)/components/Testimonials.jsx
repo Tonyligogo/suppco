@@ -34,11 +34,11 @@ export default function Testimonials() {
                 From sourcing to delivery, professionals rely on us to streamline their workflow 
                 and deliver quality on every project.</p>
         </div>  
-            <div className="max-w-5xl mx-auto lg:grid lg:grid-cols-3 lg:gap-8 flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4">
+            <div className="max-w-5xl mx-auto lg:grid lg:grid-cols-3 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4">
             {testimonials.map((t, index) => (
             <div
               key={index}
-              className="w-[300px] flex-shrink-0 border rounded-2xl shadow-lg p-6 flex flex-col text-left"
+              className="min-w-[300px] flex-shrink-0 border rounded-2xl shadow p-6 flex flex-col text-left"
             >
               {/* User Info */}
               <div className="mb-4">
