@@ -23,11 +23,9 @@ export default function Login() {
       const response = await signInUser(data);
       if(!!response.error){
         toast.error("Invalid email or password");
-      }else{
-        toast.success("Login successful!");
-        console.log('login data',response.data);
-
-        router.push("/dashboard/admin/1");
+      }
+      if(response.success){
+        router.replace('/dashboard')
       }
       
     } catch (error) {
@@ -76,12 +74,12 @@ export default function Login() {
               />
             </div>
 
-            {/* <Link
+            <Link
               href="/forgot-password"
               className="block text-right text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Forgot your password?
-            </Link> */}
+            </Link>
 
 <Button
             type="submit"

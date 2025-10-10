@@ -1,11 +1,17 @@
+import { auth } from '@/auth';
 import Header from '@/components/custom/Header';
 import { SignOut } from '@/components/custom/signout-button';
 import { HandCoins, Users, Wallet } from 'lucide-react';
 
-const Admin = () => {
+const Admin = async() => {
+  const session = await auth();
   return (
     <div>
       <SignOut/>
+      <div>
+        <h1>{session.user.username}</h1>
+        <h1>{session.user.email}</h1>
+      </div>
     <Header
         title="Overview"
         description="Have a quick look on how everything is going"

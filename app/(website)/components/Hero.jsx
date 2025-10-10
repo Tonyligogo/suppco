@@ -8,7 +8,7 @@ const Hero = () => {
     <section className='relative h-[calc(100vh+20vh)] 2xl:h-[80vh] w-full text-white overflow-hidden'>
           <div className='absolute inset-0'>
           <Image src={HeroImage} alt='heavy machinery carrying ballast' width={1500} height={1500} className='w-full h-full object-cover object-center absolute inset-0'/>
-          <div className="absolute inset-0 bg-black/80" />
+          <div className="absolute inset-0 bg-gray-900/90" />
           <div className="relative z-10 flex h-full items-center justify-center md:max-w-7xl md:mx-auto px-4">
             <div>
             <div className='max-w-4xl text-white text-center space-y-5'>

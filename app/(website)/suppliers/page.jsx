@@ -1,12 +1,18 @@
 import React from 'react'
-import SupplierHero from './components/hero'
-import SupplierFeatures from './components/Features'
+import HowItWorksSuppliers from './components/HowItWorks'
+import SupplierFaq from './components/Faq'
+import SupplierCTA from './components/CTA'
+import HeroSection from './components/hero'
+import Features from './components/Features'
 
 const Suppliers = () => {
   return (
     <div>
-        <SupplierHero/>
-        <SupplierFeatures/>
+        <HeroSection/>
+        <Features/>
+        <HowItWorksSuppliers/>
+        <SupplierCTA/>
+        <SupplierFaq/>
     </div>
   )
 }

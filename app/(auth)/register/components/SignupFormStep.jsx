@@ -15,9 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Loader2, ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { signUpUser } from "@/app/api/auth/signup";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { signUpUser } from "@/app/api/auth/accounts";
 
 const signupFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),

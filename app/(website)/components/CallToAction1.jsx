@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button'
 import { ChevronRight, HardHat, Headset, ToolCase } from 'lucide-react'
+import Link from 'next/link'
 import React from 'react'
 
 const CallToAction1 = () => {
@@ -17,7 +17,7 @@ const CallToAction1 = () => {
                     <p className='text-xl lg:text-2xl font-semibold mb-4' >Suppliers</p>
                     <p>Showcase your materials and assets to thousands of contactors in minutes.</p>
                 </div>
-                <Button className='flex items-center justify-center lg:text-lg font-normal gap-3 '>Get started <ChevronRight size={24} color='#fff' /> </Button>
+                <Link href='/suppliers' className='py-2 bg-primary text-white rounded-md flex items-center justify-center lg:text-lg font-normal gap-3 '>Get started <ChevronRight size={24} color='#fff' /> </Link>
             </div>
             <div className='flex flex-col justify-between text-center gap-6 border rounded-xl p-6'>
                 <div>
@@ -25,7 +25,7 @@ const CallToAction1 = () => {
                     <p className='text-xl lg:text-2xl font-semibold mb-4' >Contractors</p>
                     <p>Get your building materials from verified supppliers, from anywhere you are.</p>
                 </div>
-                <Button className='flex items-center justify-center lg:text-lg font-normal gap-3 '>Get started <ChevronRight size={24} color='#fff' /> </Button>
+                <Link href='/contractors' className='py-2 bg-primary text-white rounded-md flex items-center justify-center lg:text-lg font-normal gap-3 '>Get started <ChevronRight size={24} color='#fff' /> </Link>
             </div>
             <div className='flex flex-col justify-between text-center gap-6 border rounded-xl p-6'>
                 <div>
@@ -33,7 +33,7 @@ const CallToAction1 = () => {
                     <p className='text-xl lg:text-2xl font-semibold mb-4' >Talk to Us</p>
                     <p>Our support team is available to help you with anything you need, 24/7.</p>
                 </div>
-                <Button className='flex items-center justify-center lg:text-lg font-normal gap-3 '>Contact Us <ChevronRight size={24} color='#fff' /> </Button>
+                <Link href='/contact-us' className='py-2 bg-primary text-white rounded-md flex items-center justify-center lg:text-lg font-normal gap-3 '>Contact Us <ChevronRight size={24} color='#fff' /> </Link>
             </div>
         </div>
     </section>

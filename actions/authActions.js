@@ -8,7 +8,7 @@ export async function signInUser(data) {
         password: data.password,
         redirect: false,
     });
-    return { success: true };
+    return { success:true};
 } catch (error) {
     if (error.type === 'CredentialsSignin') {
       return { error: 'Invalid email or password.' };

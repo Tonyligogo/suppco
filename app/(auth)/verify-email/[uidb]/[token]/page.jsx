@@ -1,6 +1,6 @@
 "use client";
 
-import { verifyAccount } from "@/app/api/auth/verifyAccount";
+import { verifyAccount } from "@/app/api/auth/accounts";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
