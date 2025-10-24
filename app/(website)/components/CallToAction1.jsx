@@ -17,7 +17,7 @@ const CallToAction1 = () => {
                     <p className='text-xl lg:text-2xl font-semibold mb-4' >Suppliers</p>
                     <p>Showcase your materials and assets to thousands of contactors in minutes.</p>
                 </div>
-                <Link href='/suppliers' className='py-2 bg-primary text-white rounded-md flex items-center justify-center lg:text-lg font-normal gap-3 '>Get started <ChevronRight size={24} color='#fff' /> </Link>
+                <Link href='/suppliers' className='py-2 bg-primary text-white rounded-md flex items-center justify-center lg:text-lg font-normal gap-3 '>Read more <ChevronRight size={24} color='#fff' /> </Link>
             </div>
             <div className='flex flex-col justify-between text-center gap-6 border rounded-xl p-6'>
                 <div>
@@ -25,7 +25,7 @@ const CallToAction1 = () => {
                     <p className='text-xl lg:text-2xl font-semibold mb-4' >Contractors</p>
                     <p>Get your building materials from verified supppliers, from anywhere you are.</p>
                 </div>
-                <Link href='/contractors' className='py-2 bg-primary text-white rounded-md flex items-center justify-center lg:text-lg font-normal gap-3 '>Get started <ChevronRight size={24} color='#fff' /> </Link>
+                <Link href='/contractors' className='py-2 bg-primary text-white rounded-md flex items-center justify-center lg:text-lg font-normal gap-3 '>Read more <ChevronRight size={24} color='#fff' /> </Link>
             </div>
             <div className='flex flex-col justify-between text-center gap-6 border rounded-xl p-6'>
                 <div>

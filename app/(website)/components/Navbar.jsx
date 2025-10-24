@@ -24,12 +24,12 @@ export default function Navbar() {
           <ul className="hidden lg:flex items-center gap-6">
             <li>
               <a href="/suppliers" className="hover:text-white">
-                Be a supplier
+                Suppliers
               </a>
             </li>
             <li>
               <a href="/contractors" className="hover:text-white">
-                Be a contractor
+                Contractors
               </a>
             </li>
           </ul>
@@ -52,8 +52,8 @@ export default function Navbar() {
                 <a href="/">
                   <span className="text-3xl text-gray-900 font-semibold">Suppco</span>
                 </a>
-                  <a href="/suppliers">Be a supplier</a>
-                  <a href="/contractors">Be a contractor</a>
+                  <a href="/suppliers">Suppliers</a>
+                  <a href="/contractors">Contractors</a>
                   <a href="/login">Login</a>
                 </div>
               </SheetContent>

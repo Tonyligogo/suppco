@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
-import { ChartArea, ChevronRight, Handshake, ToolCase, UsersRound, Wallet, Warehouse } from "lucide-react"
+import { ChartArea, Handshake, ToolCase, UsersRound, Wallet, Warehouse } from "lucide-react"
+import Link from "next/link";
 
 export const suppliersBenefits = [
     {
@@ -53,7 +54,19 @@ const Suppliers = () => {
                   </div>
               ))}
           </div>
-          <Button size='lg' className='flex items-center text-lg font-semibold mx-auto'>Join us today <ChevronRight size={24} /> </Button>
+          <Button
+                asChild
+                size="lg"
+                className="flex w-fit mx-auto font-semibold text-lg px-8 py-3"
+              >
+                <Link
+                  href="https://forms.gle/GR8fQ4ncWerTVzLZ9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Join us today
+                </Link>
+              </Button>
       </section>
     </div>
   )

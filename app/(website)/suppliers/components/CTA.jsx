@@ -9,7 +9,9 @@ const SupplierCTA = () => {
         <p className="text-lg text-gray-600 mb-12 text-center max-w-3xl mx-auto">
           Our entire suite of features comes standard and it&apos;s free to get started.
         </p>
-        <Link href='#' className="bg-primary text-white block w-fit mx-auto font-semibold px-8 py-3 rounded-md text-lg">
+        <Link  href="https://forms.gle/GR8fQ4ncWerTVzLZ9"
+                  target="_blank"
+                  rel="noopener noreferrer" className="bg-primary text-white block w-fit mx-auto font-semibold px-8 py-3 rounded-md text-lg">
             Join us now!
           </Link>
           <div className="mt-2 text-center flex justify-center items-center gap-1">

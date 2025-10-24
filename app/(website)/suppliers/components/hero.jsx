@@ -17,7 +17,7 @@ const heroContent = {
     boxTitle: "Join as a Supplier Today!",
     boxP: "Secure your exclusive spot and gain instant access to active contractors by filling out our quick questionnaire to begin the registration process.",
     boxLinkText: "Complete the Questionnaire",
-    ctaLink: "/supplier-google-form-link" // Update with your actual form link
+    ctaLink: "https://forms.gle/GR8fQ4ncWerTVzLZ9"
   },
   contractor: {
     titleTag: "Contractors",
@@ -27,7 +27,7 @@ const heroContent = {
     boxTitle: "Ready to Start Building?",
     boxP: "Create your free account today to browse the largest local inventory, compare quotes, and streamline your material procurement process.",
     boxLinkText: "Register for Free",
-    ctaLink: "/contractor-registration-link" // Update with your contractor registration link
+    ctaLink: "https://forms.gle/5thA4kdEqvUxYUor9"
   }
 };
 
