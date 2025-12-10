@@ -25,6 +25,9 @@ export default function Login() {
         toast.error("Invalid email or password");
       }
       if(response.success){
+        setEmail("");
+        setPassword("");
+        toast.success("Login successful");
         router.replace('/dashboard')
       }
       

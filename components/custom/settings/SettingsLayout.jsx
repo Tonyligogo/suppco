@@ -39,6 +39,7 @@ export function SettingsLayout({ children }) {
   const [activeSection, setActiveSection] = useState("account");
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
+  console.log('I am the settings layout')
 
   const SidebarContent = () => (
     <>

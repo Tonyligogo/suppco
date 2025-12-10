@@ -1,25 +1,43 @@
-import React, { useState } from "react";
+'use client';
+
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Camera, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import Header from "../Header";
+import { useUpdateUserInfo, useUserInfo } from "@/hooks/(user)/useUserManagement";
+import { useParams } from "next/navigation";
+import LoadingComponent from "../loading-component";
 
-const currentUser = {
-  id: "USR-001",
-  firstName: "Tony", 
-  lastName: "Ligogo",
-  email: "ligogo@corbansuppliers.com",
-  avatar: "",
-  phone: "0790420305",
+// Helper function to extract only the necessary fields
+const filterUserInfo = (data) => {
+  if (!data) return {};
+  
+  // Extracting only the required fields
+  const { 
+    email, 
+    first_name, 
+    last_name, 
+    phone 
+  } = data;
+  
+  return { 
+    email, 
+    first_name, 
+    last_name, 
+    phone 
+  };
 };
 
 export function AccountSettings() {
-  const [formData, setFormData] = useState(currentUser);
+  const {userId} = useParams();
+  const {data:userInfo, isPending, isError} = useUserInfo(userId);
+  const [formData, setFormData] = useState(filterUserInfo(userInfo));
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -28,6 +46,16 @@ export function AccountSettings() {
     newPassword: "",
     confirmPassword: "",
   });
+  useEffect(()=>{
+    if(userInfo){
+      setFormData(filterUserInfo(userInfo));
+    }
+  },[userInfo])
+
+  const { 
+    mutate: updateProfile, 
+    isPending: isSaving 
+  } = useUpdateUserInfo();
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -38,7 +66,15 @@ export function AccountSettings() {
   };
 
   const handleSaveProfile = () => {
-    toast('Profile updated')
+    const newformData = new FormData();
+    newformData.append('first_name', formData.first_name);
+    newformData.append('last_name', formData.last_name);
+    newformData.append('email', formData.email);
+    newformData.append('phone', formData.phone);
+    updateProfile({
+      id: userId,
+      formData: newformData
+  });
   };
 
   const handleChangePassword = () => {
@@ -57,7 +93,7 @@ export function AccountSettings() {
   };
 
   const getInitials = (firstName, lastName) => {
-    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+    return `${firstName?.charAt(0)}${lastName?.charAt(0)}`.toUpperCase();
   };
 
   return (
@@ -75,21 +111,13 @@ export function AccountSettings() {
         <CardContent className="space-y-4">
           {/* Avatar Section */}
           <div className="flex items-center space-x-4">
-            <Avatar className="h-20 w-20">
-              <AvatarImage src={formData.avatar} />
-              <AvatarFallback className="text-lg">
-                {getInitials(formData.firstName, formData.lastName)}
-              </AvatarFallback>
+              {formData?.first_name && formData?.last_name ? 
+            <Avatar className="h-16 w-16">
+              <AvatarFallback className="text-xl">
+                {getInitials(formData?.first_name, formData?.last_name)}
+              </AvatarFallback> 
             </Avatar>
-            <div>
-              <Button variant="outline" size="sm">
-                <Camera className="mr-2 h-4 w-4" />
-                Change Avatar
-              </Button>
-              <p className="text-sm text-muted-foreground mt-1">
-                JPG, GIF or PNG. 1MB max.
-              </p>
-            </div>
+              : null}
           </div>
 
           <Separator />
@@ -100,16 +128,16 @@ export function AccountSettings() {
               <Label htmlFor="firstName">First Name</Label>
               <Input
                 id="firstName"
-                value={formData.firstName}
-                onChange={(e) => handleInputChange("firstName", e.target.value)}
+                value={formData?.first_name ?? ''}
+                onChange={(e) => handleInputChange("first_name", e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="lastName">Last Name</Label>
               <Input
                 id="lastName"
-                value={formData.lastName}
-                onChange={(e) => handleInputChange("lastName", e.target.value)}
+                value={formData?.last_name ?? ''}
+                onChange={(e) => handleInputChange("last_name", e.target.value)}
               />
             </div>
           </div>
@@ -119,7 +147,7 @@ export function AccountSettings() {
             <Input
               id="email"
               type="email"
-              value={formData.email}
+              value={formData?.email ?? ''}
               onChange={(e) => handleInputChange("email", e.target.value)}
             />
           </div>
@@ -128,12 +156,13 @@ export function AccountSettings() {
             <Label htmlFor="phone">Phone Number</Label>
             <Input
               id="phone"
-              value={formData.phone}
+              type='tel'
+              value={formData?.phone ?? ''}
               onChange={(e) => handleInputChange("phone", e.target.value)}
             />
           </div>
 
-          <Button onClick={handleSaveProfile}>Save Profile</Button>
+          <Button onClick={handleSaveProfile} disabled={isSaving}>{isSaving ? <LoadingComponent/> : 'Save Profile'}</Button>
         </CardContent>
       </Card>
 
@@ -218,7 +247,7 @@ export function AccountSettings() {
             </div>
           </div>
 
-          <Button onClick={handleChangePassword}>Change Password</Button>
+          <Button onClick={handleChangePassword} disabled={isSaving}>Change Password</Button>
         </CardContent>
       </Card>
     </div>

@@ -4,19 +4,29 @@ import { urlActions } from "@/lib/axiosInstance";
 export const signUpUser = async (accountType, values) => {
     const endpoint =
     accountType === "contractor"
-      ? "/api/v1/auth/signup/contractor/"
-      : "/api/v1/auth/signup/supplier/";
+      ? "/auth/signup/contractor/"
+      : "/auth/signup/supplier/";
     await urlActions?.post(endpoint, values);
   };
 
   export const verifyAccount = async (uidb, token) => {
-    await urlActions?.patch(`/api/v1/auth/verify-email/${uidb}/${token}/`);
+    await urlActions?.patch(`/auth/verify-email/${uidb}/${token}/`);
   };
   
   export const requestPasswordReset = async (email) => {
-    await urlActions?.post(`/api/v1/auth/password/reset/`, email);
+    await urlActions?.post(`/auth/password/reset/`, email);
   };
   
   export const passwordReset = async (data) => {
-    await urlActions?.post(`/api/v1/auth/password/new/`, data);
+    await urlActions?.post(`/auth/password/new/`, data);
   };
+
+  export const getUserInfo = async (id, axiosAuth) => {
+    const response = await axiosAuth.get(`/auth/${id}`);
+    return response?.data;
+  }
+
+  export const updateUserInfo = async (id, formData, axiosAuth) => {
+    const response = await axiosAuth.patch(`/auth/${id}/`, formData); 
+    return response?.data;
+};
