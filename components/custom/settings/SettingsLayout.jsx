@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { User, Building2, MapPin, Menu, Settings } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import Header from "../Header";
 
 const settingsSections = [
   {
@@ -39,7 +40,6 @@ export function SettingsLayout({ children }) {
   const [activeSection, setActiveSection] = useState("account");
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
-  console.log('I am the settings layout')
 
   const SidebarContent = () => (
     <>
@@ -76,7 +76,9 @@ export function SettingsLayout({ children }) {
 
   return (
     <SettingsLayoutContext.Provider value={{ activeSection, setActiveSection }}>
-      <div className="flex">
+      <div className="h-screen overflow-hidden pt-4">
+      <Header title='Account Settings' description=' Manage your account information and security settings.' />
+      <div className="flex h-[calc(100%-105px)] overflow-hidden">
         {isMobile ? (
           <>
             {/* Mobile Sheet Sidebar */}
@@ -101,7 +103,7 @@ export function SettingsLayout({ children }) {
               </SheetContent>
             </Sheet>
           </>
-        ) : (
+        ) : (          
           <>
             {/* Desktop Secondary Sidebar */}
             <div className="w-56 border-r pr-4">
@@ -109,11 +111,12 @@ export function SettingsLayout({ children }) {
             </div>
 
             {/* Desktop Main Content */}
-            <div className="flex-1 p-4 overflow-auto">
+            <div className="flex-1 p-4 overflow-y-auto">
               {children}
             </div>
           </>
         )}
+      </div>
       </div>
     </SettingsLayoutContext.Provider>
   );

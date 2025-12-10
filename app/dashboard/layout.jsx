@@ -6,8 +6,8 @@ const Layout = async ({children}) => {
     <SessionProvider>
         <div className='flex h-screen w-screen bg-white'>
             <Sidebar/>
-            <div className='w-full max-w-7xl mx-auto p-4 overflow-y-scroll overflow-x-hidden'>
-                <div>{children}</div>
+            <div className='w-full px-4 max-w-7xl mx-auto h-screen overflow-hidden'>
+                {children}
             </div>
         </div>
     </SessionProvider>

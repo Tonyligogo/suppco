@@ -98,7 +98,7 @@ export function AccountSettings() {
 
   return (
     <div className="space-y-6">
-      <Header title='Account Settings' description=' Manage your account information and security settings.' />
+      {/* <Header title='Account Settings' description=' Manage your account information and security settings.' /> */}
 
       {/* Profile Information */}
       <Card>

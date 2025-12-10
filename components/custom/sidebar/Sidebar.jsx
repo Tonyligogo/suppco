@@ -34,7 +34,7 @@ const Sidebar = () => {
     const items = getMenuItems(tenant);
     setMenuItems(items);
     setLoading(false);
-  }, []);
+  }, [tenant]);
 
   if (loading) {
     return <SidebarSkeleton itemCount={6} />;
