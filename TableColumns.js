@@ -132,7 +132,7 @@ export const productsColumns = [
     },
   ]; 
   
-export const branchesColumns = [
+export const oldBranchesColumns = [
     {
       key: "id",
       label: "Branch ID",
@@ -180,6 +180,23 @@ export const branchesColumns = [
         return <Badge variant={variants[value]} className='py-1 rounded-xl text-white'>{value}</Badge>;
       },
     },
+  ];
+
+  export const branchesColumns = [
+    {
+      key: "name",
+      label: "Branch Name", 
+      sortable: true,
+      filterable: true,
+      filterType: "text",
+    },
+    {
+      key: "address",
+      label: "Address", 
+      sortable: true,
+      filterable: true,
+      filterType: "text",
+    }
   ];
 
 export  const employeeColumns = [

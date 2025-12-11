@@ -9,12 +9,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
-import Header from "../Header";
 import { useUpdateUserInfo, useUserInfo } from "@/hooks/(user)/useUserManagement";
 import { useParams } from "next/navigation";
 import LoadingComponent from "../loading-component";
 
-// Helper function to extract only the necessary fields
+//function to extract only the necessary fields
 const filterUserInfo = (data) => {
   if (!data) return {};
   
@@ -23,20 +22,24 @@ const filterUserInfo = (data) => {
     email, 
     first_name, 
     last_name, 
-    phone 
+    phone,
+    kra_pin,
+    location 
   } = data;
   
   return { 
     email, 
     first_name, 
     last_name, 
-    phone 
+    phone,
+    kra_pin,
+    location 
   };
 };
 
 export function AccountSettings() {
   const {userId} = useParams();
-  const {data:userInfo, isPending, isError} = useUserInfo(userId);
+  const {data:userInfo} = useUserInfo(userId);
   const [formData, setFormData] = useState(filterUserInfo(userInfo));
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -50,8 +53,7 @@ export function AccountSettings() {
     if(userInfo){
       setFormData(filterUserInfo(userInfo));
     }
-  },[userInfo])
-
+  },[userInfo]);
   const { 
     mutate: updateProfile, 
     isPending: isSaving 
@@ -71,6 +73,8 @@ export function AccountSettings() {
     newformData.append('last_name', formData.last_name);
     newformData.append('email', formData.email);
     newformData.append('phone', formData.phone);
+    newformData.append('kra_pin', formData.kra_pin);
+    newformData.append('location', formData.location);
     updateProfile({
       id: userId,
       formData: newformData
@@ -98,8 +102,6 @@ export function AccountSettings() {
 
   return (
     <div className="space-y-6">
-      {/* <Header title='Account Settings' description=' Manage your account information and security settings.' /> */}
-
       {/* Profile Information */}
       <Card>
         <CardHeader>
@@ -161,6 +163,22 @@ export function AccountSettings() {
               onChange={(e) => handleInputChange("phone", e.target.value)}
             />
           </div>
+          <div className="space-y-2">
+              <Label htmlFor="kra_pin">KRA pin</Label>
+              <Input
+                id="kra_pin"
+                value={formData?.kra_pin ?? ''}
+                onChange={(e) => handleInputChange("kra_pin", e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="location">Location</Label>
+              <Input
+                id="location"
+                value={formData?.location ?? ''}
+                onChange={(e) => handleInputChange("location", e.target.value)}
+              />
+            </div>
 
           <Button onClick={handleSaveProfile} disabled={isSaving}>{isSaving ? <LoadingComponent/> : 'Save Profile'}</Button>
         </CardContent>

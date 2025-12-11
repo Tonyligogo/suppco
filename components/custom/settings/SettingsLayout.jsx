@@ -1,9 +1,14 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { User, Building2, MapPin, Menu, Settings } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Header from "../Header";
@@ -15,7 +20,7 @@ const settingsSections = [
     icon: User,
   },
   {
-    id: "company", 
+    id: "company",
     label: "Company",
     icon: Building2,
   },
@@ -31,7 +36,9 @@ export const SettingsLayoutContext = React.createContext(null);
 export function useSettingsLayout() {
   const context = React.useContext(SettingsLayoutContext);
   if (!context) {
-    throw new Error("useSettingsLayout must be used within SettingsLayoutProvider");
+    throw new Error(
+      "useSettingsLayout must be used within SettingsLayoutProvider"
+    );
   }
   return context;
 }
@@ -43,12 +50,12 @@ export function SettingsLayout({ children }) {
 
   const SidebarContent = () => (
     <>
-        <div className="flex items-center gap-3 mt-1 mb-3 md:mb-6">
-            <div className="bg-muted p-2 rounded-full">
-                <Settings size={20}/>
-            </div>
-            <h3 className="font-semibold text-lg">Settings</h3>
+      <div className="flex items-center gap-3 mt-1 mb-3 md:mb-6">
+        <div className="bg-muted p-2 rounded-full">
+          <Settings size={20} />
         </div>
+        <h3 className="font-semibold text-lg">Settings</h3>
+      </div>
       <div className="space-y-1">
         {settingsSections.map((section) => {
           const Icon = section.icon;
@@ -76,47 +83,42 @@ export function SettingsLayout({ children }) {
 
   return (
     <SettingsLayoutContext.Provider value={{ activeSection, setActiveSection }}>
-      <div className="h-screen overflow-hidden pt-4">
-      <Header title='Account Settings' description=' Manage your account information and security settings.' />
-      <div className="flex h-[calc(100%-105px)] overflow-hidden">
-        {isMobile ? (
-          <>
-            {/* Mobile Sheet Sidebar */}
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <div className="w-[calc(100vw-36px)]">
-                <div className="flex items-center gap-2 p-4 border-b">
+      <div className="h-screen overflow-auto pt-4">
+        <Header
+          title="Account Settings"
+          description=" Manage your account information and security settings."
+        />
+          {isMobile ? (
+            <div className="flex justify-between gap-1 h-[calc(100%-130px)] overflow-hidden">
+              <div className="flex-1 pr-2 overflow-y-auto">
+                {children}
+              </div>
+              {/* Mobile Sheet Sidebar */}
+              <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                <div>
                   <SheetTrigger asChild>
                     <Button variant="outline" size="icon">
                       <Menu className="h-4 w-4" />
                     </Button>
                   </SheetTrigger>
-                  <h2 className="font-semibold text-lg">Settings</h2>
                 </div>
-                <div className="mt-2 md:mt-0 md:p-4 h-[88vh] overflow-y-auto">
-                  {children}
-                </div>
-              </div>
-              
-              <SheetContent side="left" className="w-64 p-4 md:p-0">
-                <SheetTitle className='sr-only'>Settings sidebar</SheetTitle>
+                <SheetContent side="left" className="w-3/4 p-4 md:p-0">
+                  <SheetTitle className="sr-only">Settings sidebar</SheetTitle>
+                  <SidebarContent />
+                </SheetContent>
+              </Sheet>
+            </div>
+          ) : (
+            <div className="flex h-[calc(100%-105px)] overflow-hidden">
+              {/* Desktop Secondary Sidebar */}
+              <div className="w-56 border-r pr-4">
                 <SidebarContent />
-              </SheetContent>
-            </Sheet>
-          </>
-        ) : (          
-          <>
-            {/* Desktop Secondary Sidebar */}
-            <div className="w-56 border-r pr-4">
-              <SidebarContent />
-            </div>
+              </div>
 
-            {/* Desktop Main Content */}
-            <div className="flex-1 p-4 overflow-y-auto">
-              {children}
+              {/* Desktop Main Content */}
+              <div className="flex-1 p-4 overflow-y-auto">{children}</div>
             </div>
-          </>
-        )}
-      </div>
+          )}
       </div>
     </SettingsLayoutContext.Provider>
   );

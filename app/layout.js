@@ -24,7 +24,9 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
       <ToasterProvider position="top-center" />
             <ReactQueryProvider>
+              <main>
               {children}
+              </main>
             </ReactQueryProvider>
       </body>
     </html>

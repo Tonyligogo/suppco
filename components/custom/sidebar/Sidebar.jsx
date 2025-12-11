@@ -50,7 +50,6 @@ const Sidebar = () => {
             <ul>
               {menuItems.map((item) => {
                 const href = `/dashboard/${tenant}/${userId}${item.href}`;
-                console.log("Generated href:", href);
                 const newItem = {
                   ...item,
                   href,

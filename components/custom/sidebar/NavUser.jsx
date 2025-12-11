@@ -17,7 +17,6 @@ import { useSession } from "next-auth/react";
 
 const NavUser = ({isMobile, tenant, userId}) => { 
   const { data: session, status } = useSession();
-  console.log(session,status);
   const user = session?.user;
   if(!user && status !== 'loading'){
     return null;
