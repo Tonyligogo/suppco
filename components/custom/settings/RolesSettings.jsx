@@ -1,5 +1,5 @@
 import { useAllPermissions, useAllRoles, useCreateRole } from "@/hooks/(roles)/useRoleManagement"
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { RoleCard } from "./(roles)/role-card";
@@ -27,12 +27,7 @@ export function RolesSettings() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [availableUsers] = useState(mockUsers);
   const {mutate:createRole, isPending:isCreatingRole} = useCreateRole()
-  useEffect(()=>{
-    if(allRoles){
-        setRoles(allRoles)
-    }
-  },[allRoles])
-
+  
   const handleCreateRole = (roleData) => {
     if(!companyInfo.identity) return
     const data = {
@@ -65,8 +60,8 @@ export function RolesSettings() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
-        <div className="max-w-6xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
+        <div className="max-w-6xl mx-auto md:px-6 md:py-6">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
               <div>
                 <h1 className="text-2xl font-semibold">
                   Roles & Permissions
@@ -77,7 +72,7 @@ export function RolesSettings() {
               </div>
             <Button
               onClick={() => setIsCreateModalOpen(true)}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground gap-2"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground gap-2 mb-4 md:mb-0"
             >
               <Plus className="h-4 w-4" />
               Create Role
@@ -86,7 +81,7 @@ export function RolesSettings() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
+      <main className="max-w-6xl mx-auto md:px-6 py-8">
         {isCreatingRole ? 
         (
             <div className="flex bg-primary/10 py-4 rounded-lg border border-dashed border-primary text-primary items-center justify-center gap-2 mb-5">
@@ -95,10 +90,10 @@ export function RolesSettings() {
             </div>
         )
          :null}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 gap-4 mb-8">
           <div className="bg-card rounded-lg border border-border p-5">
             <p className="text-sm text-muted-foreground mb-1">Total Roles</p>
-            <p className="text-3xl font-bold text-foreground">{roles?.length}</p>
+            <p className="text-3xl font-bold text-foreground">{allRoles?.length}</p>
           </div>
           <div className="bg-card rounded-lg border border-border p-5">
             <p className="text-sm text-muted-foreground mb-1">Permissions</p>
@@ -107,7 +102,7 @@ export function RolesSettings() {
         </div>
 
         <div className="space-y-4">
-          {roles?.length === 0 ? (
+          {allRoles?.length === 0 ? (
             <div className="text-center py-16 bg-card rounded-lg border border-border">
               <h3 className="text-lg font-medium text-foreground mb-2">
                 No roles created yet
@@ -124,7 +119,7 @@ export function RolesSettings() {
               </Button>
             </div>
           ) : (
-            roles?.map((role) => (
+            allRoles?.map((role) => (
               <RoleCard
                 key={role.id}
                 role={role}

@@ -15,10 +15,10 @@ export const RoleCard = ({ role, permissions, onDelete }) => {
 
   return (
     <Card className="overflow-hidden transition-all duration-200 hover:shadow-md">
-      <CardHeader className="pb-3">
+      <CardHeader className="md:pb-3">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col md:flex-row md:items-center gap-3">
               <h3 className="text-lg font-semibold text-foreground">{role.name}</h3>
               <Badge variant="outline" className="font-normal">
                 <Shield className="h-3 w-3 mr-1" />
@@ -26,7 +26,7 @@ export const RoleCard = ({ role, permissions, onDelete }) => {
               </Badge>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             <Button
               variant="ghost"
               size="icon"
@@ -58,21 +58,9 @@ export const RoleCard = ({ role, permissions, onDelete }) => {
       {isExpanded && (
         <CardContent className="pt-0 animate-fade-in">
           <div className="flex gap-2 mb-4 border-b border-border">
-            
-            <button
-              onClick={() => setActiveTab('permissions')}
-              className={cn(
-                'px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px',
-                activeTab === 'permissions'
-                  ? 'border-accent text-accent'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
-              )}
-            >
-              Permissions ({role.permissions.length})
-            </button>
+            <p>Permissions</p>
           </div>
 
-          
             <PermissionsGroup
               groupedPermissions={groupedPermissions}
               selectedPermissions={role.permissions}
