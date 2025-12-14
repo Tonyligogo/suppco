@@ -11,7 +11,7 @@ import { useParams } from "next/navigation";
 const Supplier = () => {
   const {userId} = useParams();
   return (
-    <div>
+    <div className="pt-4">
       <Header
         title="Overview"
         description="Have a quick look on how everything is going"
