@@ -41,7 +41,7 @@ const Sidebar = () => {
   }
 
   const SidebarComponent = (
-    <div className="bg-[#fefefe] flex-none border-r relative px-4 md:py-4 h-full w-[230px] flex flex-col justify-between gap-4 overflow-auto">
+    <div className="bg-[#fefefe] flex-none border-r relative px-4 md:py-4 h-[97vh] w-[230px] flex flex-col justify-between gap-4 overflow-auto">
       <div>
         <span className="font-bold text-3xl">Suppco</span>
         <div className="mt-4">
