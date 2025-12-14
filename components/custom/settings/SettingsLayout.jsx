@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { User, Building2, MapPin, Menu, Settings } from "lucide-react";
+import { User, Building2, MapPin, Menu, Settings, UserLock } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Header from "../Header";
 
@@ -28,6 +28,11 @@ const settingsSections = [
     id: "branches",
     label: "Branches",
     icon: MapPin,
+  },
+  {
+    id: "roles",
+    label: "Roles & Permissions",
+    icon: UserLock,
   },
 ];
 
