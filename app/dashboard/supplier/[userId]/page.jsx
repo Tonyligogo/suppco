@@ -16,8 +16,8 @@ const Supplier = () => {
         title="Overview"
         description="Have a quick look on how everything is going"
       />
-      <div className="">
-        <div className="flex gap-4 mb-5">
+      <div className="h-[89vh] overflow-y-auto pr-2 pb-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
         <Widget icon={<Warehouse size={20} />} title='Branches' value='4' />
           <Widget icon={<Users size={20} />} title='Employees' value='32' />
           <Widget icon={<Package size={20} />} title='Inventory' value='20' />
@@ -51,7 +51,7 @@ const Supplier = () => {
         <div className="">
           <div className="border rounded-lg p-4">
             <p className="border-b pb-2 text-lg font-semibold">Quick actions</p>
-            <div className="mt-5 flex gap-4">
+            <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-4">
               <QuickAction icon={<Plus size={20}/>} action='Add Branch' href={`/supplier/${userId}/products`} />
               <QuickAction icon={<Mail size={20}/>} action='Invite Employee' href={`/supplier/${userId}/employees`} />
               <QuickAction icon={<Plus size={20}/>} action='Add Inventory' href={`/supplier/${userId}/products`} />
@@ -97,7 +97,7 @@ const Notification = ({contractor}) => {
 
 const QuickAction = ({icon, action, href}) =>{
   return(
-    <Link href={href} className="flex-1 flex gap-2 items-center justify-center bg-slate-50 p-2 rounded-lg">
+    <Link href={href} className="flex-1 flex gap-2 items-center justify-center border p-2 rounded-md">
       {icon}{action}
     </Link>
   )

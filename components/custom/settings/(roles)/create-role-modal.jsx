@@ -8,15 +8,12 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { groupPermissions } from './permissions';
 import { PermissionsGroup } from './permissions-group';
-import LoadingComponent from '../../loading-component';
 
 export const CreateRoleModal = ({
   open,
@@ -29,6 +26,7 @@ export const CreateRoleModal = ({
   const [selectedPermissions, setSelectedPermissions] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [activeStep, setActiveStep] = useState('details');
+  const [error, setError]=useState('')
 
   const groupedPermissions = groupPermissions(permissions);
 
@@ -36,6 +34,9 @@ export const CreateRoleModal = ({
     setSelectedPermissions((prev) =>
       checked ? [...prev, permissionCodeName] : prev.filter((codeName) => codeName !== permissionCodeName)
     );
+    if(error){
+      setError('')
+    }
   };
 
   const handleUserChange = (userId, checked) => {
@@ -45,6 +46,11 @@ export const CreateRoleModal = ({
   };
 
   const handleSubmit = () => {
+    if(selectedPermissions.length === 0){
+      setError('At least 1 permission must be selected')
+      return
+    }
+    setError('')
     // const assignedUsers = users.filter((u) => selectedUsers.includes(u.id));
     onCreateRole({
       name,
@@ -69,16 +75,15 @@ export const CreateRoleModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[85vh] flex flex-col">
+      <DialogContent className="md:max-w-2xl max-h-[85vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-xl">Create New Role</DialogTitle>
         </DialogHeader>
 
         <div className="flex gap-1 mb-4 p-1 bg-muted rounded-lg">
           {(['details', 'permissions', 'users']).map((step, index) => (
-            <button
+            <div
               key={step}
-              onClick={() => setActiveStep(step)}
               className={cn(
                 'flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all',
                 activeStep === step
@@ -88,11 +93,15 @@ export const CreateRoleModal = ({
             >
               <span className="mr-2">{index + 1}.</span>
               {step.charAt(0).toUpperCase() + step.slice(1)}
-            </button>
+            </div>
           ))}
         </div>
-
-        <ScrollArea className="flex-1 pr-4">
+          {error ? (
+            <div className='bg-red-50 py-3 rounded-lg px-3 text-red-500'>
+              <p>{error}</p> 
+            </div>
+          ) :null}
+        <div className="flex-1 pr-4">
           {activeStep === 'details' && (
             <div className="space-y-4">
               <div className="space-y-2">
@@ -126,15 +135,15 @@ export const CreateRoleModal = ({
               <p className="text-sm text-muted-foreground mb-4">
                 Assign users to this role immediately. {selectedUsers.length} selected.
               </p>
-              <div className="space-y-2">
+              <ScrollArea className="h-72">
                 {users.map((user) => (
                   <label
                     key={user.id}
                     className={cn(
-                      'flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all',
+                      'flex items-center mb-2 gap-3 p-3 rounded-lg border cursor-pointer transition-all',
                       selectedUsers.includes(user.id)
-                        ? 'bg-accent/10 border-accent/30'
-                        : 'bg-card border-border hover:bg-muted/50'
+                        ? 'bg-primary/10'
+                        : ''
                     )}
                   >
                     <Checkbox
@@ -143,21 +152,16 @@ export const CreateRoleModal = ({
                         handleUserChange(user.id, checked)
                       }
                     />
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-accent/10 text-accent text-xs font-medium">
-                        {user.name.split(' ').map((n) => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
                     <div>
                       <p className="text-sm font-medium text-foreground">{user.name}</p>
                       <p className="text-xs text-muted-foreground">{user.email}</p>
                     </div>
                   </label>
                 ))}
-              </div>
+              </ScrollArea>
             </div>
           )}
-        </ScrollArea>
+        </div>
 
         <DialogFooter className="gap-2">
           {activeStep !== 'details' && (
