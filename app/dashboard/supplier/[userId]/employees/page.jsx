@@ -1,21 +1,25 @@
 'use client';
 
+import { CreateEmployee } from "@/components/custom/create-employee";
 import { DataTable } from "@/components/custom/DataTable";
 import Header from "@/components/custom/Header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useAllEmployees } from "@/hooks/(employee)/useEmployeeManagement";
 import { getInitials } from "@/lib/utils";
 import { employeeData } from "@/MockData";
 import { employeeColumns } from "@/TableColumns";
 
 const Employees = () => {
+  const {data:employees} = useAllEmployees()
     const handleRowAction = (action, employee) => {
         console.log(`Action: ${action}`, employee);
         // Handle different actions here
       };
   return (
-    <div className="space-y-6">
-        <Header title='Employees table' description='Manage your employees across all branches.'/>
+    <div className="space-y-6 relative">
+        <Header title='All Employees' description='Manage your employees across all branches.'/>
+        <div className="absolute right-2"> <CreateEmployee/> </div>
         <DataTable
           data={employeeData}
           columns={employeeColumns}
