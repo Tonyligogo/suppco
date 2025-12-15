@@ -1,38 +1,39 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAxiosAuth } from "../useAxiosAuth";
 import toast from "react-hot-toast";
-import { createBranch, getBranches, updateBranchInfo } from "@/app/api/branch";
+import { updateBranchInfo } from "@/app/api/branch";
+import { createEmployee, getEmployees } from "@/app/api/employee";
 
-export const useCompanyBranches = () => {
+export const useAllEmployees = () => {
   const axiosAuth = useAxiosAuth();
   return useQuery({
-    queryKey: ["branches"],
-    queryFn:()=> getBranches(axiosAuth),
+    queryKey: ["employees"],
+    queryFn:()=> getEmployees(axiosAuth),
     enabled:!!axiosAuth,
   });
 };
 
-export const useCreateBranch = () => {
+export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   const axiosAuth = useAxiosAuth();
     
   return useMutation({
       // The mutation function receives the variables passed to mutate()
-      mutationFn: ({ formData }) => createBranch(formData, axiosAuth),
+      mutationFn: ({ data }) => createEmployee(data, axiosAuth),
       
       onSuccess: (updatedData) => {
           // 1. Invalidate the old query cache
           // This forces the useUserInfo hook to refetch the latest data
-          queryClient.invalidateQueries({ queryKey: ["branches"] });
+          queryClient.invalidateQueries({ queryKey: ["employees"] });
           
           // I am directly setting the new data in the cache (Optimistic Update)
-          queryClient.setQueryData(["branches", updatedData.identity], updatedData);
+          queryClient.setQueryData(["employees", updatedData.id], updatedData);
 
-          toast.success("Branch created successfully!");
+          toast.success("Employee invite sent successfully!");
       },
       
       onError: () => {
-          toast.error(`Branch creation failed: 'Server error'`);
+          toast.error(`Employee creation failed: 'Server error'`);
       },
   });
 };
