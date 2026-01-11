@@ -12,12 +12,13 @@ import { employeeColumns } from "@/TableColumns";
 
 const Employees = () => {
   const {data:employees} = useAllEmployees()
+  console.log(employees)
     const handleRowAction = (action, employee) => {
         console.log(`Action: ${action}`, employee);
         // Handle different actions here
       };
   return (
-    <div className="space-y-6 relative">
+    <div className="space-y-6 pt-4 relative">
         <Header title='All Employees' description='Manage your employees across all branches.'/>
         <div className="absolute right-2"> <CreateEmployee/> </div>
         <DataTable

@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ToasterProvider } from "@/providers/ToastProvider";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,12 +23,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <SessionProvider>
+
       <ToasterProvider position="top-center" />
             <ReactQueryProvider>
               <main>
               {children}
               </main>
             </ReactQueryProvider>
+        </SessionProvider>
       </body>
     </html>
   );

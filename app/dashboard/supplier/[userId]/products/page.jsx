@@ -5,6 +5,13 @@ import { DataTable } from "@/components/custom/DataTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { productsData } from "@/MockData";
 import { productsColumns } from "@/TableColumns";
+import { useCreateInventory, useInventory, useProducts } from "@/hooks/(inventory)/useInventoryManagement";
+import DynamicDialog from "@/components/custom/dynamic-dialog";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { InventoryTypes } from "@/data";
+import { useCompanyInfo } from "@/hooks/(company)/useCompanyManagement";
+import { usePathname, useRouter } from "next/navigation";
 
 const renderProductDetails = (product) => (
   <div className="space-y-6">
@@ -49,6 +56,31 @@ const renderProductDetails = (product) => (
 );
 
 export default function Products() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const inventoryTypes = InventoryTypes;
+  const pathname = usePathname();
+  const router = useRouter()
+  const {mutate:createInventory} = useCreateInventory();
+  const { data: companyInfo } = useCompanyInfo();
+  const options = inventoryTypes.map((type)=>{
+    return {
+      label:type,
+      value:type
+    }
+  })
+  const inventoryFields = [
+    { 
+      name: "name", 
+      label: "Inventory type", 
+      type: "select", 
+      required:true,
+      placeholder: "Select a type",
+      options
+    },
+  ];
+  const {data:inventories} = useInventory()
+  const {data:products} = useProducts()
+  console.log('my prods',products)
   const handleRowAction = (action, row) => {
     console.log(`Action: ${action}`, row);
     // Handle different actions here
@@ -64,11 +96,38 @@ export default function Products() {
         break;
     }
   };
+  const handleDataSubmit = (info) => {
+    const data = {
+      ...info,
+      company: companyInfo?.name,
+    }
+    createInventory({data})
+  }; 
 
   return (
     <div className="space-y-6">
       <Header title='Products & Inventory' description='Manage your product catalog and track inventory levels across all branches.'/>
-
+      <div className="flex w-full gap-5 flex-col md:flex-row">
+        <div className="flex-1 border rounded-lg p-6">
+          <div className="flex items-center gap-5 justify-between">
+          <p className="text-muted-foreground text-lg">Inventory</p>
+          <Button onClick={() => setIsModalOpen(true)}>Add Inventory</Button>
+          </div>
+          <p className="text-xl font-bold">
+            {inventories?.length ?? null}
+          </p>
+        </div>
+      </div>
+      <Button onClick={() => router.push(`${pathname}/create`)}>Add Product</Button>
+      <DynamicDialog
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        title="Create Inventory"
+        description="Fill in the details below to create a new inventory."
+        fields={inventoryFields}
+        onSubmit={handleDataSubmit}
+        submitText="Create Product"
+      />
       <DataTable
         data={productsData}
         columns={productsColumns}

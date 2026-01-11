@@ -37,12 +37,12 @@ import LoadingComponent from "./loading-component"
 
 export function CreateEmployee() {
     const {data:allRoles} = useAllRoles()
-        const { data: companyInfo } = useCompanyInfo();
+    const { data: companyInfo } = useCompanyInfo();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [inputError, setInputError] = useState('')
-      const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
   const{mutate:createEmployee, isPending} = useCreateEmployee()
 

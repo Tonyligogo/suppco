@@ -10,7 +10,6 @@ import LoadingComponent from './loading-component'
 
 const CreateBranchDialog = ({isCreateDialogOpen, setIsCreateDialogOpen, branchToEdit, setSelectedBranch}) => {
   const isEditMode = !!branchToEdit;
-  console.log(branchToEdit,'ntr')
     const [newBranchData, setNewBranchData] = useState({
         name: "",
         address: "",

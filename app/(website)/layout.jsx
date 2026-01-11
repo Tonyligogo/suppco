@@ -6,7 +6,7 @@ const WebsiteLayout = ({children}) => {
   return (
     <div className='relative overflow-x-hidden'>
         <Navbar/>
-        <div className='mt-18'>
+        <div>
         {children}  
         </div>
         <Footer/>
