@@ -7,7 +7,7 @@ const SidebarItem = ({item, selected}) => {
   return (
     <li className="cursor-pointer my-1">
       <Link 
-        href={item.href} 
+        href={item.href}
         className={`flex items-center justify-between group rounded-lg hover:bg-muted ${selected ? 'bg-muted' : ''} `}
       >
         <div className="flex items-center gap-2 transition-all p-[8px] cursor-pointer">

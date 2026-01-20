@@ -15,7 +15,7 @@ export const updateInventory = async (identity, formData, axiosAuth) => {
 
 // create layer
 export const createLayer = async (formData,axiosAuth) => {
-    const response = await axiosAuth.post(`/layers/`, formData);
+    const response = await axiosAuth.post(`/layers/list-create/`, formData);
     return response?.data;
 };
 
@@ -27,7 +27,7 @@ export const createSubLayer = async (formData,axiosAuth) => {
 
 // layers
 export const getLayers = async (axiosAuth) => {
-    const response = await axiosAuth.get(`/layers/`);
+    const response = await axiosAuth.get(`/layers/list-create/`);
     return response?.data?.results;
 };
 // sublayers

@@ -10,8 +10,10 @@ import {
 } from "@/components/ui/sheet";
 import {
   CircleQuestionMark,
+  ExternalLink,
   Menu,
   Settings,
+  Store,
 } from "lucide-react";
 
 import React, { useEffect, useState } from "react";
@@ -68,6 +70,19 @@ const Sidebar = () => {
       </div>
       <div>
         <ul>
+          <li>
+            <a href="/suppco-market" target="_blank" rel="noopener noreferrer"
+        className='flex items-center justify-between group rounded-lg hover:bg-muted'
+            >            
+        <div className="flex items-center gap-2 transition-all p-[8px] cursor-pointer">
+          <Store className='group-hover:text-black text-muted-foreground' size={18} />
+          <span className='group-hover:text-black transition-all truncate w-32 text-muted-foreground'>
+            Marketplace
+          </span>
+          <ExternalLink className='group-hover:text-black text-muted-foreground' size={18} />
+        </div>
+            </a>
+          </li>
           <SidebarItem
             key="settings"
             item={{

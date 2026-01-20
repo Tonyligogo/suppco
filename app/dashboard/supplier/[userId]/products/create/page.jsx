@@ -42,6 +42,7 @@ export default function CreateProductPage() {
   const {data:inventories} = useInventory();
   const {data:layers} = useLayers()
   const {mutate: createProduct, isPending:isCreatingProduct} = useCreateProduct();
+  console.log('my layers',layers)
   const inventoryOptions = inventories?.map((inv)=>{
     return {
       label:inv.name,

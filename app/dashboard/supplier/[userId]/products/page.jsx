@@ -80,7 +80,6 @@ export default function Products() {
   ];
   const {data:inventories} = useInventory()
   const {data:products} = useProducts()
-  console.log('my prods',products)
   const handleRowAction = (action, row) => {
     console.log(`Action: ${action}`, row);
     // Handle different actions here
