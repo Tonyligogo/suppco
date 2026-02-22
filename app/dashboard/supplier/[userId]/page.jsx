@@ -19,10 +19,6 @@ const Supplier = () => {
   const {data:employees, isPending: employeesPending} = useAllEmployees();
   const {data:orders, isPending: ordersPending} = useSupplierOrders();
   const {data:products, isPending: productsPending} = useProducts();
-  console.log('branches',branches)
-  console.log('employees',employees)
-  console.log('orders',orders)
-  console.log('products',products)
   return (
     <div className="pt-4">
       <Header
