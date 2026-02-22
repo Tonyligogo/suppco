@@ -9,36 +9,46 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import LoadingComponent from "@/components/custom/loading-component";
 import { signInUser } from "@/actions/authActions";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    setLoading(true);
-    const data = { email, password };
-    try {
-      const response = await signInUser(data);
-      if(!!response.error){
-        toast.error("Invalid email or password");
-      }
-      if(response.success){
-        setEmail("");
-        setPassword("");
-        toast.success("Login successful");
-        router.replace('/dashboard')
-      }
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  if (!email || !password) {
+    return toast.error("Please fill in all fields");
+  }
+
+  setLoading(true);
+
+  try {
+    const response = await signInUser({ email, password });
+
+    if (response.error) {
+      const message = response.error === 'CredentialsSignin' 
+        ? "Invalid email or password" 
+        : "An unexpected error occurred";
       
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("Login failed. Please check your credentials and try again.");
-    }finally{
-      setLoading(false);
+      return toast.error(message);
     }
 
+    toast.success("Login successful");
+    setEmail("");
+    setPassword("");
+    
+    router.replace('/dashboard');
+    
+  } catch {
+    toast.error("Something went wrong. Please try again later.");
+  } finally {
+    setLoading(false);
   }
+};
  
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
@@ -64,17 +74,20 @@ export default function Login() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 relative">
               <Label htmlFor="password" className="font-normal text-lg">
                 Password
               </Label>
               <Input
                 id="password"
-                type="password"
+                type={isPasswordVisible ? 'text' : 'password'}
                 placeholder="Enter your password"
                 value={password}
               onChange={(e) => setPassword(e.target.value)}
               />
+              <button onClick={()=>setIsPasswordVisible(prev=>!prev)} type='button' className="absolute right-2 top-1/2 translate-y-1/4 text-muted-foreground">
+                {isPasswordVisible ? <EyeOff/> : <Eye/>}              
+              </button>
             </div>
 
             <Link

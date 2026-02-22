@@ -66,6 +66,7 @@ export const useAllPermissions = () => {
       return useQuery({
         queryKey: ["permissions"],
         queryFn:()=> getPermissions(axiosAuth),
+        staleTime: 5 * 60 * 1000, //cache for 5 minutes
         enabled:!!axiosAuth,
       });
 }

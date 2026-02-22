@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <section className="relative h-[calc(100vh+20vh)] 2xl:h-[80vh] w-full text-white overflow-hidden">
+    <section className="relative h-[100vh] 2xl:h-[80vh] w-full text-white overflow-hidden">
       <div className="absolute inset-0">
         <Image
           src={HeroImage}

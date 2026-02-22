@@ -1,6 +1,7 @@
 "use client";
 
 import { verifyAccount } from "@/app/api/auth/accounts";
+import LoadingComponent from "@/components/custom/loading-component";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -39,7 +40,7 @@ function VerifyAccount() {
             className="bg-primary/80 hover:bg-primary"
           >
             {loading ? (
-                <span className="visually-hidden">Loading...</span>
+                <LoadingComponent/>
             ) : (
               "Verify Account"
             )}

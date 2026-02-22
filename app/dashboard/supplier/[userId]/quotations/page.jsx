@@ -5,7 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 import { DataTable } from "@/components/custom/DataTable";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { quotations } from "@/MockData";
 import { quotationColumns } from "@/TableColumns";
 import QuotationPreview from "./QuotationPreview";
@@ -14,6 +14,8 @@ const Quotations = () => {
     const router = useRouter();
     const [showRequests, setShowRequests] = useState(false);
     const [showPreview, setShowPreview] = useState(false);
+    const {userId} = useParams();
+    console.log(userId)
   
     const filteredData = showRequests 
       ? quotations.filter(item => item.type === "request")
@@ -25,10 +27,10 @@ const Quotations = () => {
           setShowPreview(true);
           break;
         case "edit":
-          router.push(`/supplier/1/quotations/edit/${row.id}`);
+          router.push(`/dashboard/supplier/${userId}/quotations/edit/${row.id}`);
           break;
         case "create_quote":
-          router.push(`/supplier/1/quotations/create?requestId=${row.id}`);
+          router.push(`/dashboard/supplier/${userId}/quotations/create?requestId=${row.id}`);
           break;
         case "duplicate":
           console.log("Duplicate quotation:", row.id);
@@ -84,7 +86,7 @@ const Quotations = () => {
           </div>
           
           {!showRequests && (
-            <Button onClick={() => router.push("/supplier/1/quotations/create")}>
+            <Button onClick={() => router.push(`/dashboard/supplier/${userId}/quotations/create`)}>
               <Plus className="h-4 w-4 mr-2" />
               New Quotation
             </Button>

@@ -10,8 +10,8 @@ import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import QuotationPreview from "@/app/(dashboard)/supplier/[userId]/quotations/QuotationPreview";
 import Header from "./Header";
+import QuotationPreview from "@/app/dashboard/supplier/[userId]/quotations/QuotationPreview";
 
 const initialFormData = {
   contractorName: "",

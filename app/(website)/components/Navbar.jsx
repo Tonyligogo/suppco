@@ -12,7 +12,7 @@ import Link from "next/link"
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 h-18 z-50 w-full bg-gray-900 text-gray-300">
+    <nav className="absolute top-0 z-50  w-full text-gray-300">
       <div className="px-4 xl:mx-auto xl:max-w-[80vw]">
         <div className="flex items-center justify-between py-3">
           {/* Left side (logo) */}

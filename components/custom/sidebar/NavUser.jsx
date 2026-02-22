@@ -56,7 +56,7 @@ const NavUser = ({isMobile, tenant, userId}) => {
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Link
-                  href={`/dashboard/${tenant}/${userId}/settings/account`}
+                  href={`/dashboard/${tenant}/${userId}/settings`}
                   className="flex gap-2 items-center"
                 >
                   <CircleUser color="black" />

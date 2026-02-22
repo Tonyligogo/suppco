@@ -40,7 +40,6 @@ export function CompanySettings() {
   const { data: companyInfo } = useCompanyInfo();
   const [formData, setFormData] = useState(filterCompanyInfo(companyInfo));
   const [validationErrors, setValidationErrors] = useState({});
-
   // Update formData when companyInfo is fetched
   useEffect(() => {
     if (companyInfo) {
