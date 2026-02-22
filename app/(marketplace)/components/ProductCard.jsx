@@ -21,10 +21,10 @@ export function ProductCard({ product }) {
 
   return (
     <>
-      <article className="marketplace-card group flex flex-col animate-fade-in">
+      <article className="marketplace-card border group flex flex-col animate-fade-in">
         {/* Image placeholder - clickable for preview */}
         <div 
-          className="relative aspect-[4/3] overflow-hidden rounded-t-lg bg-muted cursor-pointer"
+          className="relative aspect-[4/3] overflow-hidden bg-muted cursor-pointer"
           onClick={() => setPreviewOpen(true)}
         >
           <div className="absolute inset-0 flex items-center justify-center">
@@ -62,7 +62,7 @@ export function ProductCard({ product }) {
           {/* Compare button overlay */}
           <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
             <Button
-              variant={inCompare ? "default" : "secondary"}
+              variant="default" 
               size="icon"
               className="h-8 w-8 shadow-md"
               onClick={(e) => {
@@ -74,7 +74,7 @@ export function ProductCard({ product }) {
               {inCompare ? (
                 <Check className="h-4 w-4" />
               ) : (
-                <Scale className="h-4 w-4" />
+                <Scale className="h-4 w-4 text-white" />
               )}
             </Button>
           </div>
@@ -95,13 +95,6 @@ export function ProductCard({ product }) {
           >
             {product.product_name}
           </h3>
-
-          {/* Description */}
-          {product.specifications.description && (
-            <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-              {product.specifications.description}
-            </p>
-          )}
 
           {/* Location */}
           {product.source_location && (
@@ -126,16 +119,12 @@ export function ProductCard({ product }) {
           </div>
 
           {/* Footer */}
-          <div className="mt-auto flex items-end justify-between gap-2">
-            <div>
+            <div className='mb-4'>
               {price !== undefined ? (
                 <>
                   <p className="text-xl font-display font-bold text-foreground">
-                    Ksh {price.toFixed(2)}
+                    Ksh {price.toFixed(2)} / {units}
                   </p>
-                  {units && (
-                    <p className="text-xs text-muted-foreground">per {units}</p>
-                  )}
                 </>
               ) : (
                 <p className="text-sm text-muted-foreground">Contact for price</p>
@@ -155,7 +144,6 @@ export function ProductCard({ product }) {
         open={configOpen}
         onOpenChange={setConfigOpen}
       />
-          </div>
         </div>
       </article>
 

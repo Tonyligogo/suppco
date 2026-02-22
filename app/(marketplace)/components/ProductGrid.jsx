@@ -128,7 +128,7 @@ export function ProductGrid({ products, filters, onSortChange, onOpenMobileFilte
 
       {/* Grid */}
       {filteredAndSortedProducts.length > 0 ? (
-        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
           {filteredAndSortedProducts.map((product) => (
             <ProductCard key={product.reference} product={product} />
           ))}

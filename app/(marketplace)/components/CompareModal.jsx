@@ -7,21 +7,32 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { useMarketplace } from '../context/MarketplaceContext';
 import { cn } from '@/lib/utils';
 
+const getComparableFields = (product) => {
+  return {
+    price: Number(product.price),
+    quantity: product.quantity,
+    unit: product.unit,
+    source_location: product.source_location,
+    company: product.company,
+    ...product.specifications,
+  };
+};
+
 export function CompareModal({ open, onOpenChange }) {
   const { compareItems, removeFromCompare, clearCompare, addToCart } = useMarketplace();
 
+  console.log(compareItems)
   // Get all unique specification keys from compared products
   const allSpecKeys = useMemo(() => {
-    const keys = new Set();
-    compareItems.forEach((product) => {
-      Object.keys(product.specifications).forEach((key) => {
-        if (key !== 'image') {
-          keys.add(key);
-        }
-      });
-    });
-    return Array.from(keys).sort();
-  }, [compareItems]);
+  const keys = new Set();
+
+  compareItems.forEach((product) => {
+    const comparable = getComparableFields(product);
+    Object.keys(comparable).forEach((key) => keys.add(key));
+  });
+
+  return Array.from(keys).sort();
+}, [compareItems]);
 
   const formatSpecLabel = (key) => {
     return key
@@ -30,23 +41,29 @@ export function CompareModal({ open, onOpenChange }) {
   };
 
   const formatSpecValue = (value) => {
-    if (value === null || value === undefined) return '—';
-    if (typeof value === 'number') return value.toString();
-    if (typeof value === 'string') return value;
-    if (Array.isArray(value)) return value.length.toString() + ' items';
-    return JSON.stringify(value);
-  };
+  if (value === null || value === undefined || value === "") return "—";
+
+  if (typeof value === "number") return value.toString();
+
+  if (typeof value === "string") return value;
+
+  if (Array.isArray(value)) return `${value.length} items`;
+
+  if (typeof value === "object") return JSON.stringify(value);
+
+  return String(value);
+};
+
+  const isPriceField = (key) => key === "price";
 
   // Find the best value for price comparison
-  const getPriceRank = (price) => {
-    const prices = compareItems
-      .map((p) => p.specifications.price)
-      .filter((p)=> typeof p === 'number')
-      .sort((a, b) => a - b);
-    
-    if (!price) return -1;
-    return prices.indexOf(price);
-  };
+  const getPriceRank = (values) => {
+  const prices = values
+    .filter((v) => typeof v === "number" && !isNaN(v))
+    .sort((a, b) => a - b);
+
+  return (price) => prices.indexOf(price);
+};
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -90,10 +107,15 @@ export function CompareModal({ open, onOpenChange }) {
                       </Button>
                       
                       {/* Product image placeholder */}
-                      <div className="w-full aspect-square rounded-lg bg-muted flex items-center justify-center mb-3">
-                        <Package className="h-12 w-12 text-muted-foreground/40" />
+                      <div className="w-full max-w-md aspect-square rounded-lg bg-muted flex items-center justify-center mb-3">
+                        {
+                          !product.image ? (
+                            <Package className="h-12 w-12 text-muted-foreground/40" />
+                          ) : (
+                            <img src={product.image} alt={product.product_name} className="h-full w-full object-cover" />
+                          )
+                        }
                       </div>
-                      
                       <h4 className="font-display font-semibold text-foreground text-sm line-clamp-2 mb-1">
                         {product.product_name}
                       </h4>
@@ -115,51 +137,68 @@ export function CompareModal({ open, onOpenChange }) {
 
                 {/* Comparison rows */}
                 <div className="divide-y divide-border">
-                  {allSpecKeys.map((key) => {
-                    const isPrice = key === 'price';
-                    
-                    return (
-                      <div
-                        key={key}
-                        className="grid gap-4 py-3"
-                        style={{ gridTemplateColumns: `200px repeat(${compareItems.length}, minmax(200px, 1fr))` }}
-                      >
-                        <div className="font-medium text-sm text-muted-foreground">
-                          {formatSpecLabel(key)}
-                        </div>
-                        {compareItems.map((product) => {
-                          const value = product.specifications[key];
-                          const formattedValue = formatSpecValue(value);
-                          const priceRank = isPrice ? getPriceRank(value) : -1;
-                          
-                          return (
-                            <div
-                              key={product.id}
-                              className={cn(
-                                "text-sm",
-                                isPrice && priceRank === 0 && "text-success font-semibold",
-                                isPrice && typeof value === 'number' && "font-display text-lg font-bold"
-                              )}
-                            >
-                              {isPrice && typeof value === 'number' ? (
-                                <>
-                                  ${value.toFixed(2)}
-                                  {priceRank === 0 && (
-                                    <Badge className="ml-2 bg-success text-success-foreground text-xs">
-                                      Best
-                                    </Badge>
-                                  )}
-                                </>
-                              ) : (
-                                formattedValue
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    );
-                  })}
-                </div>
+  {allSpecKeys.map((key) => {
+    const values = compareItems.map((product) => {
+      const comparable = getComparableFields(product);
+      return comparable[key];
+    });
+
+    const isPrice = isPriceField(key);
+    const rankPrice = getPriceRank(values);
+
+    return (
+      <div
+        key={key}
+        className="grid gap-4 py-3"
+        style={{
+          gridTemplateColumns: `200px repeat(${compareItems.length}, minmax(200px, 1fr))`,
+        }}
+      >
+        <div className="font-medium text-sm text-muted-foreground">
+          {formatSpecLabel(key)}
+        </div>
+
+        {compareItems.map((product) => {
+          const comparable = getComparableFields(product);
+          const value = comparable[key];
+
+          const numericValue =
+            typeof value === "string" && !isNaN(Number(value))
+              ? Number(value)
+              : value;
+
+          const formattedValue = formatSpecValue(numericValue);
+          const priceRank = isPrice ? rankPrice(numericValue) : -1;
+
+          return (
+            <div
+              key={product.reference}
+              className={cn(
+                "text-sm",
+                isPrice && priceRank === 0 && "text-success font-semibold",
+                isPrice && typeof numericValue === "number" &&
+                  "font-display text-lg font-bold"
+              )}
+            >
+              {isPrice && typeof numericValue === "number" ? (
+                <>
+                  ${numericValue.toFixed(2)}
+                  {priceRank === 0 && (
+                    <Badge className="ml-2 bg-success text-success-foreground text-xs">
+                      Best
+                    </Badge>
+                  )}
+                </>
+              ) : (
+                formattedValue
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  })}
+</div>
               </div>
                <ScrollBar orientation="horizontal" />
             </ScrollArea>
