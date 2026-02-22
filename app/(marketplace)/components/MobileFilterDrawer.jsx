@@ -43,14 +43,14 @@ export function MobileFilterDrawer({
         manufacturers.add(product.specifications.manufacturer);
       }
       
-      const price = product.specifications.price || 0;
+      const price = product.price || 0;
       minPrice = Math.min(minPrice, price);
       maxPrice = Math.max(maxPrice, price);
 
       // Extract dynamic specification fields
       Object.entries(product.specifications).forEach(([key, value]) => {
         if (
-          ['features', 'description', 'image', 'price', 'minimum_order_quantity', 'environmental_specifications'].includes(key)
+          ['features', 'description', 'minimum_order_quantity', 'environmental_specifications'].includes(key)
         ) {
           return;
         }
