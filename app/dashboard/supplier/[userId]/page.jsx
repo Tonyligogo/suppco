@@ -52,10 +52,10 @@ const Supplier = () => {
           <div className="border rounded-lg p-4">
             <p className="border-b pb-2 text-lg font-semibold">Quick actions</p>
             <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-4">
-              <QuickAction icon={<Plus size={20}/>} action='Add Branch' href={`/supplier/${userId}/products`} />
-              <QuickAction icon={<Mail size={20}/>} action='Invite Employee' href={`/supplier/${userId}/employees`} />
-              <QuickAction icon={<Plus size={20}/>} action='Add Inventory' href={`/supplier/${userId}/products`} />
-              <QuickAction icon={<Eye size={20}/>} action='View quotes' href={`/supplier/${userId}/quotations`} />
+              <QuickAction icon={<Plus size={20}/>} action='Add Branch' href={`/dashboard/supplier/${userId}/branches`} />
+              <QuickAction icon={<Mail size={20}/>} action='Invite Employee' href={`/dashboard/supplier/${userId}/employees`} />
+              <QuickAction icon={<Plus size={20}/>} action='Add Inventory' href={`/dashboard/supplier/${userId}/products`} />
+              <QuickAction icon={<Eye size={20}/>} action='View quotes' href={`/dashboard/supplier/${userId}/quotations`} />
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAxiosAuth } from "../useAxiosAuth";
 import { createPaymentOption, getPaymentOptions } from "@/app/api/payment";
-import { createCart, createOrder, getCart, getOrders } from "@/app/api/orders";
+import { createCart, createOrder, getCart, getOrders, getSupplierOrders } from "@/app/api/orders";
 
 export function useCreatePaymentOption() {
   const queryClient = useQueryClient();
@@ -64,6 +64,16 @@ export const useGetCart = () => {
   return useQuery({
     queryKey: ["cart"],
     queryFn:()=> getCart(axiosAuth),
+    enabled:!!axiosAuth,
+  });
+};
+
+// supplier orders
+export const useSupplierOrders = () => {
+  const axiosAuth = useAxiosAuth();
+  return useQuery({
+    queryKey: ["supplier-orders"],
+    queryFn:()=> getSupplierOrders(axiosAuth),
     enabled:!!axiosAuth,
   });
 };

@@ -3,6 +3,7 @@
 import { CreateEmployee } from "@/components/custom/create-employee";
 import { DataTable } from "@/components/custom/DataTable";
 import Header from "@/components/custom/Header";
+import TableSkeleton from "@/components/custom/table-skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useAllEmployees } from "@/hooks/(employee)/useEmployeeManagement";
@@ -11,23 +12,31 @@ import { employeeData } from "@/MockData";
 import { employeeColumns } from "@/TableColumns";
 
 const Employees = () => {
-  const {data:employees} = useAllEmployees()
+  const {data:employees, isPending} = useAllEmployees()
   console.log(employees)
     const handleRowAction = (action, employee) => {
         console.log(`Action: ${action}`, employee);
         // Handle different actions here
       };
+      if(isPending){
+        return(
+          <div className="pt-6">
+            <Header title='All Employees' description='Manage your employees across all branches.'/>
+            <TableSkeleton/>
+          </div>
+        )
+      }
   return (
     <div className="space-y-6 pt-4 relative">
         <Header title='All Employees' description='Manage your employees across all branches.'/>
         <div className="absolute right-2"> <CreateEmployee/> </div>
         <DataTable
-          data={employeeData}
+          data={employees}
           columns={employeeColumns}
           title="Employee Management"
           searchPlaceholder="Search employees by name, email, role, or branch..."
           onRowAction={handleRowAction}
-          renderDetailView={renderDetailView}
+          // renderDetailView={renderDetailView}
         />
     </div>
   )
