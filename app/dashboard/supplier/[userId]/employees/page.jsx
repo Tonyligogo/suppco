@@ -13,7 +13,6 @@ import { employeeColumns } from "@/TableColumns";
 
 const Employees = () => {
   const {data:employees, isPending} = useAllEmployees()
-  console.log(employees)
     const handleRowAction = (action, employee) => {
         console.log(`Action: ${action}`, employee);
         // Handle different actions here
