@@ -71,33 +71,33 @@ export function validateProductFields({ fields, data }) {
         break;
       }
 
-      case "file": {
-        if (!Array.isArray(value)) {
-          addError(field.id, "Invalid file input.");
-          break;
-        }
+      // case "file": {
+      //   if (!Array.isArray(value)) {
+      //     addError(field.id, "Invalid file input.");
+      //     break;
+      //   }
 
-        if (field.accept) {
-          value.forEach(file => {
-            const valid = field.accept.some(type =>
-              file.type.startsWith(type.replace("/*", ""))
-            );
-            if (!valid) {
-              addError(
-                field.id,
-                `Invalid file type: ${file.name}`
-              );
-            }
-          });
-        }
-        break;
-      }
+      //   if (field.accept) {
+      //     value.forEach(file => {
+      //       const valid = field.accept.some(type =>
+      //         file.type.startsWith(type.replace("/*", ""))
+      //       );
+      //       if (!valid) {
+      //         addError(
+      //           field.id,
+      //           `Invalid file type: ${file.name}`
+      //         );
+      //       }
+      //     });
+      //   }
+      //   break;
+      // }
 
       case "text":
       case "textarea":
       case "date":
       case "boolean":
-        // Usually no extra validation needed
+        case "file":
         break;
 
       default:

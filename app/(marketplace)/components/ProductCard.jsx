@@ -5,16 +5,19 @@ import { Badge } from '@/components/ui/badge';
 import { useMarketplace } from '../context/MarketplaceContext';
 import { ProductPreview } from './ProductPreview';
 import { cn } from '@/lib/utils';
+import { PaymentConfigModal } from './PaymentConfigModal';
 
 export function ProductCard({ product }) {
-  const { addToCart, addToCompare, isInCompare, canAddMore } = useMarketplace();
+  const { addToCompare, isInCompare, canAddMore } = useMarketplace();
   const [previewOpen, setPreviewOpen] = useState(false);
   const inCompare = isInCompare(product.reference);
+  const [configOpen, setConfigOpen] = useState(false);
   
-  const price = product.specifications.price;
+  const price = Number(product.price);
   const minOrder = product.specifications.minimum_order_quantity;
   const condition = product.specifications.condition;
   const units = product.specifications.units_of_measurement;
+  console.log(product)
 
   return (
     <>
@@ -25,7 +28,13 @@ export function ProductCard({ product }) {
           onClick={() => setPreviewOpen(true)}
         >
           <div className="absolute inset-0 flex items-center justify-center">
-            <Package className="h-12 w-12 text-muted-foreground/40" />
+            {
+              !product.image ? (
+                <Package className="h-12 w-12 text-muted-foreground/40" />
+              ) : (
+                <img src={product.image} alt={product.product_name} className="h-full w-full object-cover" />
+              )
+            }
           </div>
           
           {/* Condition badge */}
@@ -122,7 +131,7 @@ export function ProductCard({ product }) {
               {price !== undefined ? (
                 <>
                   <p className="text-xl font-display font-bold text-foreground">
-                    ${price.toFixed(2)}
+                    Ksh {price.toFixed(2)}
                   </p>
                   {units && (
                     <p className="text-xs text-muted-foreground">per {units}</p>
@@ -135,12 +144,17 @@ export function ProductCard({ product }) {
 
             <Button
               size="sm"
-              onClick={() => addToCart(product)}
+              onClick={() => setConfigOpen(true)}
               className="gap-1.5"
             >
               <ShoppingCart className="h-4 w-4" />
               Add
             </Button>
+             <PaymentConfigModal
+        product={product}
+        open={configOpen}
+        onOpenChange={setConfigOpen}
+      />
           </div>
         </div>
       </article>

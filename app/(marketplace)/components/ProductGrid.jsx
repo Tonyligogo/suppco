@@ -7,7 +7,8 @@ import { ProductCard } from './ProductCard';
 
 export function ProductGrid({ products, filters, onSortChange, onOpenMobileFilters, activeFilterCount = 0 }) {
   const filteredAndSortedProducts = useMemo(() => {
-    let result = [...products];
+    const safeProducts = Array.isArray(products) ? products : [];
+    let result = [...safeProducts];
 
     // Search filter
     if (filters?.search) {

@@ -355,6 +355,7 @@ export const FIELD_GROUPS = {
   base_fields: [
     "product_name",
     "units_of_measurement",
+    "price",
       "variation_type_name",
       "image",
       "description",
@@ -456,7 +457,7 @@ export const FIELD_DEFINITIONS = {
     type: "file",
     multiple: true,
     accept: ["image/*"],
-    required: true
+    // required: true
   },
 
   description: {
@@ -477,6 +478,12 @@ export const FIELD_DEFINITIONS = {
     label: "Source Location",
     type: "text",
     filterable: true
+  },
+  price: {
+    id: "price",
+    label: "Price",
+    type: "number",
+    min:1,
   },
 
   manufacturer: {

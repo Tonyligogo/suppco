@@ -3,11 +3,11 @@
 import { ClassificationSelector } from "@/components/custom/classification-selector";
 import DynamicDialog from "@/components/custom/dynamic-dialog";
 import LoadingComponent from "@/components/custom/loading-component";
+import { PaymentOptionsSelector } from "@/components/custom/payment-option-selector";
 import { ProductSpecificFields } from "@/components/custom/productSpecificFields";
 import { resolveProductFields } from "@/components/custom/resolveProductFields";
 import { validateProductFields } from "@/components/custom/validateProductFields";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Layers, SandSublayerItems, Sublayers } from "@/data";
 import { useCreateLayer, useCreateProduct, useCreateSubLayer, useCreateSubLayerItem, useInventory, useLayers } from "@/hooks/(inventory)/useInventoryManagement";
 import { useMemo, useState } from "react";
@@ -41,8 +41,8 @@ export default function CreateProductPage() {
   const [confirmed, setConfirmed] = useState(false)
   const {data:inventories} = useInventory();
   const {data:layers} = useLayers()
+  
   const {mutate: createProduct, isPending:isCreatingProduct} = useCreateProduct();
-  console.log('my layers',layers)
   const inventoryOptions = inventories?.map((inv)=>{
     return {
       label:inv.name,
@@ -79,7 +79,6 @@ const {mutate:createSublayerItem} = useCreateSubLayerItem();
     });
 
     if (!validation.isValid) {
-      console.log(validation.errors)
       setErrors(validation.errors);
       return;
     }
@@ -96,15 +95,31 @@ const sublayerItem = sublayer?.sublayeritems?.find(
 );
 
 const sublayerItemReference = sublayerItem?.reference;    
-const { product_name, ...specifications } = formData;
-
-const data = {
-  sublayeritem: sublayerItemReference,
+const {
   product_name,
-  specifications
-};
+  payment_options,
+  price,
+  source_location,
+  image,
+  ...specifications
+} = formData;
 
-    createProduct({data})
+const data = new FormData();
+
+data.append("sublayeritem", sublayerItemReference);
+data.append("product_name", product_name);
+data.append("payment_options", payment_options);
+data.append("price", price);
+data.append("source_location", source_location);
+
+// objects must be stringified
+data.append("specifications", JSON.stringify(specifications));
+// ✅ append the file itself
+if (image) {
+  data.append("image", image);
+}
+console.log(data)
+createProduct({data});
   };
 
     const dialogConfig = {
@@ -239,6 +254,17 @@ const data = {
               errors={errors}
               onChange={setFormData}
             />
+
+            <PaymentOptionsSelector
+              value={formData.payment_options}
+              onChange={(options) =>
+                setFormData(prev => ({
+                  ...prev,
+                  payment_options: options,
+                }))
+              }
+            />
+
 
             <div className="flex justify-end">
               <Button onClick={handleSubmit} disabled={isCreatingProduct}>

@@ -1,10 +1,10 @@
 export const createInventory = async (formData,axiosAuth) => {
-    const response = await axiosAuth.post(`/inventory/`, formData);
+    const response = await axiosAuth.post(`/inventory/list-create/`, formData);
     return response?.data;
 };
 
 export const getInventories = async (axiosAuth) => {
-    const response = await axiosAuth.get(`/inventory/`);
+    const response = await axiosAuth.get(`/inventory/list-create`);
     return response?.data?.results;
 };
 
@@ -21,7 +21,7 @@ export const createLayer = async (formData,axiosAuth) => {
 
 // create layer
 export const createSubLayer = async (formData,axiosAuth) => {
-    const response = await axiosAuth.post(`/sublayers/`, formData);
+    const response = await axiosAuth.post(`/sublayers/list-create/`, formData);
     return response?.data;
 };
 
@@ -32,17 +32,17 @@ export const getLayers = async (axiosAuth) => {
 };
 // sublayers
 export const getSubLayers = async (axiosAuth) => {
-    const response = await axiosAuth.get(`/sublayers/`);
+    const response = await axiosAuth.get(`/sublayers/list-create`);
     return response?.data?.results;
 };
 
 // create layer
 export const createSubLayerItem = async (formData,axiosAuth) => {
-    const response = await axiosAuth.post(`/sublayeritems/`, formData);
+    const response = await axiosAuth.post(`/sublayeritems/list-create/`, formData);
     return response?.data;
 };
 // sublayer items
 export const getSubLayerItems = async (axiosAuth) => {
-    const response = await axiosAuth.get(`/sublayeritems/`);
+    const response = await axiosAuth.get(`/sublayeritems/list-create`);
     return response?.data?.results;
 };

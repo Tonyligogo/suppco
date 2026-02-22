@@ -30,7 +30,7 @@ export function FilterSidebar({
         manufacturers.add(product.specifications.manufacturer);
       }
       
-      const price = product?.specifications?.price || 0;
+      const price = product?.price || 0;
       minPrice = Math.min(minPrice, price);
       maxPrice = Math.max(maxPrice, price);
 
@@ -38,7 +38,7 @@ export function FilterSidebar({
       Object.entries(product?.specifications).forEach(([key, value]) => {
         // Skip known fields and complex types
         if (
-          ['features', 'description', 'image', 'price', 'minimum_order_quantity', 'environmental_specifications'].includes(key)
+          ['features', 'description', 'minimum_order_quantity', 'environmental_specifications'].includes(key)
         ) {
           return;
         }
@@ -103,8 +103,6 @@ export function FilterSidebar({
     Object.values(filters.specifications).flat().length +
     (filters.priceRange[0] > filterOptions.priceRange[0] || 
      filters.priceRange[1] < filterOptions.priceRange[1] ? 1 : 0);
-
-     console.log('filter options', filterOptions)
 
   return (
     <aside className="hidden lg:block w-72 flex-shrink-0">

@@ -32,7 +32,7 @@ export function MobileFilterDrawer({
     let minPrice = Infinity;
     let maxPrice = 0;
 
-    products.forEach((product) => {
+    products?.forEach((product) => {
       companies.add(product.company);
       
       if (product.specifications.condition) {

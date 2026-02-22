@@ -1,5 +1,10 @@
 "use client";
 
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Textarea } from "../ui/textarea";
+
 export function DynamicField({ field, value, onChange }) {
   const {
     id,
@@ -19,11 +24,11 @@ export function DynamicField({ field, value, onChange }) {
     const rangeValue = value ?? {};
 
     return (
-      <div className="field">
-        <label>{label}</label>
+      <div className="space-y-2">
+        <Label>{label}</Label>
 
         <div className="flex gap-2">
-          <input
+          <Input
             type="number"
             placeholder="Min"
             value={rangeValue.min ?? ""}
@@ -32,7 +37,7 @@ export function DynamicField({ field, value, onChange }) {
             }
           />
 
-          <input
+          <Input
             type="number"
             placeholder="Max"
             value={rangeValue.max ?? ""}
@@ -42,18 +47,23 @@ export function DynamicField({ field, value, onChange }) {
           />
 
           {unit && (
-            <select
+            <Select
               value={rangeValue.unit ?? unit[0]}
-              onChange={e =>
+              onValueChange={e =>
                 onChange({ ...rangeValue, unit: e.target.value })
               }
             >
-              {unit.map(u => (
-                <option key={u} value={u}>
-                  {u}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger>
+            <SelectValue placeholder="Select" />
+          </SelectTrigger>
+              <SelectContent>
+                          {unit.map(u => (
+                            <SelectItem key={u} value={u}>
+                              {u}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+            </Select>
           )}
         </div>
       </div>
@@ -65,9 +75,9 @@ export function DynamicField({ field, value, onChange }) {
   // -------------------------
   if (type === "number") {
     return (
-      <div className="field">
-        <label>{label}</label>
-        <input
+      <div className="space-y-2">
+        <Label>{label}</Label>
+        <Input
           type="number"
           value={value ?? ""}
           onChange={e => onChange(e.target.valueAsNumber)}
@@ -80,16 +90,22 @@ export function DynamicField({ field, value, onChange }) {
   // TEXT / TEXTAREA
   // -------------------------
   if (type === "text" || type === "textarea") {
-    const Component = type === "textarea" ? "textarea" : "input";
-
     return (
-      <div className="field">
-        <label>{label}</label>
-        <Component
+      <div className="space-y-2">
+        <Label>{label}</Label>
+        {type === "text" ? 
+        <Input
           value={value ?? ""}
-          placeholder={placeholder}
           onChange={e => onChange(e.target.value)}
+          placeholder={placeholder}
         />
+         :
+         <Textarea
+        placeholder={placeholder}
+        value={value ?? ""}
+        onChange={e => onChange(e.target.value)}
+      />
+         }
       </div>
     );
   }
@@ -99,19 +115,23 @@ export function DynamicField({ field, value, onChange }) {
   // -------------------------
   if (type === "select") {
     return (
-      <div className="field">
-        <label>{label}</label>
-        <select
+      <div className="space-y-2">
+        <Label>{label}</Label>
+        <Select
           value={value ?? ""}
-          onChange={e => onChange(e.target.value)}
+          onValueChange={value => onChange(value)}
         >
-          <option value="">Select</option>
-          {options?.map(o => (
-            <option key={o.value} value={o.value}>
-              {o.label}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger>
+            <SelectValue placeholder="Select" />
+          </SelectTrigger>
+          <SelectContent>
+            {options?.map(o => (
+              <SelectItem key={o.value} value={o.value}>
+                {o.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
     );
   }
@@ -121,14 +141,13 @@ export function DynamicField({ field, value, onChange }) {
   // -------------------------
   if (type === "file") {
     return (
-      <div className="field">
-        <label>{label}</label>
-        <input
+      <div className="space-y-2">
+        <Label>{label}</Label>
+        <Input
           type="file"
-          multiple={field.multiple}
           accept={field.accept?.join(",")}
           onChange={e =>
-            onChange(Array.from(e.target.files ?? []))
+            onChange(e.target.files?.[0] ?? null)
           }
         />
       </div>

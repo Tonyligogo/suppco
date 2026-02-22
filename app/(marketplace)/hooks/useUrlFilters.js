@@ -3,21 +3,21 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 
 export function useUrlFilters() {
-   const searchParams = useSearchParams()
+   const params = useSearchParams()
    const router = useRouter();
 
   const filters = useMemo(() => {
-    const search = searchParams.get('q') || '';
-    const companies = searchParams.get('companies')?.split(',').filter(Boolean) || [];
-    const conditions = searchParams.get('conditions')?.split(',').filter(Boolean) || [];
-    const manufacturers = searchParams.get('manufacturers')?.split(',').filter(Boolean) || [];
-    const priceMin = Number(searchParams.get('priceMin')) || 0;
-    const priceMax = Number(searchParams.get('priceMax')) || 1000000;
-    const sortBy = (searchParams.get('sort')) || 'name';
+    const search = params.get('q') || '';
+    const companies = params.get('companies')?.split(',').filter(Boolean) || [];
+    const conditions = params.get('conditions')?.split(',').filter(Boolean) || [];
+    const manufacturers = params.get('manufacturers')?.split(',').filter(Boolean) || [];
+    const priceMin = Number(params.get('priceMin')) || 0;
+    const priceMax = Number(params.get('priceMax')) || 1000000;
+    const sortBy = (params.get('sort')) || 'name';
 
     // Parse dynamic specification filters
     const specifications = {};
-    searchParams.forEach((value, key) => {
+    params.forEach((value, key) => {
       if (key.startsWith('spec_')) {
         const specKey = key.replace('spec_', '');
         specifications[specKey] = value.split(',').filter(Boolean);
@@ -33,7 +33,7 @@ export function useUrlFilters() {
       sortBy,
       specifications,
     };
-  }, [searchParams]);
+  }, [params]);
 
   const setFilters = useCallback(
   (newFilters) => {

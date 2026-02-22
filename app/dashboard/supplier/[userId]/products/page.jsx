@@ -5,13 +5,14 @@ import { DataTable } from "@/components/custom/DataTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { productsData } from "@/MockData";
 import { productsColumns } from "@/TableColumns";
-import { useCreateInventory, useInventory, useProducts } from "@/hooks/(inventory)/useInventoryManagement";
+import { useCreateInventory, useInventory } from "@/hooks/(inventory)/useInventoryManagement";
 import DynamicDialog from "@/components/custom/dynamic-dialog";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { InventoryTypes } from "@/data";
 import { useCompanyInfo } from "@/hooks/(company)/useCompanyManagement";
 import { usePathname, useRouter } from "next/navigation";
+import { PaymentOptionForm } from "@/components/custom/paymentOptionForm";
 
 const renderProductDetails = (product) => (
   <div className="space-y-6">
@@ -79,7 +80,6 @@ export default function Products() {
     },
   ];
   const {data:inventories} = useInventory()
-  const {data:products} = useProducts()
   const handleRowAction = (action, row) => {
     console.log(`Action: ${action}`, row);
     // Handle different actions here
@@ -104,7 +104,7 @@ export default function Products() {
   }; 
 
   return (
-    <div className="space-y-6">
+    <div className="py-6 space-y-6">
       <Header title='Products & Inventory' description='Manage your product catalog and track inventory levels across all branches.'/>
       <div className="flex w-full gap-5 flex-col md:flex-row">
         <div className="flex-1 border rounded-lg p-6">
@@ -118,6 +118,7 @@ export default function Products() {
         </div>
       </div>
       <Button onClick={() => router.push(`${pathname}/create`)}>Add Product</Button>
+      <PaymentOptionForm/>
       <DynamicDialog
         isOpen={isModalOpen}
         onOpenChange={setIsModalOpen}
@@ -125,7 +126,7 @@ export default function Products() {
         description="Fill in the details below to create a new inventory."
         fields={inventoryFields}
         onSubmit={handleDataSubmit}
-        submitText="Create Product"
+        submitText="Create Inventory"
       />
       <DataTable
         data={productsData}

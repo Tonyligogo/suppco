@@ -3,6 +3,8 @@ import "./globals.css";
 import { ToasterProvider } from "@/providers/ToastProvider";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { SessionProvider } from "next-auth/react";
+import { PermissionsProvider } from "@/providers/PermissionsProvider";
+import { AuthProvider } from "@/providers/AuthContextProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,13 +26,14 @@ export default function RootLayout({ children }) {
     <html lang="en" data-scroll-behavior="smooth">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <SessionProvider>
-
-      <ToasterProvider position="top-center" />
-            <ReactQueryProvider>
-              <main>
-              {children}
-              </main>
-            </ReactQueryProvider>
+          <AuthProvider>
+              <ReactQueryProvider>
+            <PermissionsProvider>
+              <ToasterProvider position="top-center" />
+                <main>{children}</main>
+            </PermissionsProvider>
+              </ReactQueryProvider>
+          </AuthProvider>
         </SessionProvider>
       </body>
     </html>

@@ -22,7 +22,7 @@ export const mockUsers = [
 export function RolesSettings() {
     const {data:permissions} = useAllPermissions()
     const {data:allRoles} = useAllRoles()
-    console.log('my roles',allRoles)
+    console.log('my permissions',permissions)
     const { data: companyInfo } = useCompanyInfo();
   const [roles, setRoles] = useState(allRoles ? allRoles :[]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);

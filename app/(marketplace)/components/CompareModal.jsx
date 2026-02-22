@@ -79,12 +79,12 @@ export function CompareModal({ open, onOpenChange }) {
                   style={{ gridTemplateColumns: `repeat(${compareItems.length}, minmax(200px, 1fr))` }}
                 >
                   {compareItems.map((product) => (
-                    <div key={product.id} className="relative">
+                    <div key={product.reference} className="relative">
                       <Button
                         variant="ghost"
                         size="icon"
                         className="absolute -top-1 -right-1 h-6 w-6"
-                        onClick={() => removeFromCompare(product.id)}
+                        onClick={() => removeFromCompare(product.reference)}
                       >
                         <X className="h-4 w-4" />
                       </Button>
