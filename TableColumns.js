@@ -5,36 +5,36 @@ import { getInitials } from "./lib/utils";
 
 // orders table columns
 export const ordersColumns = [
+    // {
+    //   key: "reference",
+    //   label: "Order ID",
+    //   sortable: true,
+    //   filterable: true,
+    //   filterType: "text",
+    // },
+    // {
+    //   key: "customerName",
+    //   label: "Customer",
+    //   sortable: true,
+    //   filterable: true,
+    //   filterType: "text",
+    // },
     {
-      key: "id",
-      label: "Order ID",
-      sortable: true,
-      filterable: true,
-      filterType: "text",
-    },
-    {
-      key: "customerName",
-      label: "Customer",
-      sortable: true,
-      filterable: true,
-      filterType: "text",
-    },
-    {
-      key: "orderDate",
+      key: "created_at",
       label: "Order Date",
       sortable: true,
       filterable: true,
       filterType: "date",
       render: (value) => new Date(value).toLocaleDateString(),
     },
-    {
-      key: "deliveryDate", 
-      label: "Delivery Date",
-      sortable: true,
-      filterable: true,
-      filterType: "date",
-      render: (value) => new Date(value).toLocaleDateString(),
-    },
+    // {
+    //   key: "deliveryDate", 
+    //   label: "Delivery Date",
+    //   sortable: true,
+    //   filterable: true,
+    //   filterType: "date",
+    //   render: (value) => new Date(value).toLocaleDateString(),
+    // },
     {
       key: "status",
       label: "Status",
@@ -43,65 +43,58 @@ export const ordersColumns = [
       filterType: "text",
       render: (value) => {
         const variants = {
-          pending: "secondary",
-          shipped: "default", 
-          completed: "default",
-          cancelled: "destructive",
+          PLACED: "default",
+          PARTIALLY_DISPATCHED: "secondary", 
+          DISPATCHED: "secondary",
+          COMPLETED: "default",
+          CANCELLED: "destructive",
         };
         return <Badge variant={variants[value]} className='py-1 rounded-xl text-white'>{value}</Badge>;
       },
     },
+    // {
+    //   key: "paymentStatus",
+    //   label: "Payment",
+    //   sortable: true,
+    //   filterable: true,
+    //   filterType: "text",
+    //   render: (value) => {
+    //     const variants = {
+    //       paid: "default",
+    //       pending: "secondary",
+    //       refunded: "outline",
+    //     };
+    //     return <Badge variant={variants[value]} className='py-1 rounded-xl text-white'>{value}</Badge>;
+    //   },
+    // },
     {
-      key: "paymentStatus",
-      label: "Payment",
-      sortable: true,
-      filterable: true,
-      filterType: "text",
-      render: (value) => {
-        const variants = {
-          paid: "default",
-          pending: "secondary",
-          refunded: "outline",
-        };
-        return <Badge variant={variants[value]} className='py-1 rounded-xl text-white'>{value}</Badge>;
-      },
-    },
-    {
-      key: "total",
+      key: "total_amount",
       label: "Total",
       sortable: true,
       filterable: true,
       filterType: "number",
-      render: (value) => `$${value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+      render: (value) => `Ksh ${Number(value).toFixed(2)}`,
     },
   ];
 
 // products table columns
 export const productsColumns = [
     {
-      key: "id",
-      label: "Product ID",
+      key: "reference",
+      label: "Product Ref",
       sortable: true,
       filterable: true,
       filterType: "text",
     },
     {
-      key: "name", 
+      key: "product_name", 
       label: "Product Name",
       sortable: true,
       filterable: true,
       filterType: "text",
     },
     {
-      key: "category",
-      label: "Category", 
-      sortable: true,
-      filterable: true,
-      filterType: "text",
-      render: (value) => <Badge variant="outline">{value}</Badge>,
-    },
-    {
-      key: "stock",
+      key: "quantity",
       label: "Stock Level",
       sortable: true,
       filterable: true,
@@ -113,23 +106,23 @@ export const productsColumns = [
       sortable: true,
       filterable: true,
       filterType: "number",
-      render: (value) => `$${value.toFixed(2)}`,
+      render: (value) => `Ksh ${Number(value).toFixed(2)}`,
     },
-    {
-      key: "status",
-      label: "Status",
-      sortable: true,
-      filterable: true,
-      filterType: "text",
-      render: (value) => {
-        const variants = {
-          active: "default",
-          low_stock: "secondary", 
-          no_stock: "destructive",
-        };
-        return <Badge variant={variants[value]} className='py-1 rounded-xl text-white'>{value.replace('_', ' ')}</Badge>;
-      },
-    },
+    // {
+    //   key: "status",
+    //   label: "Status",
+    //   sortable: true,
+    //   filterable: true,
+    //   filterType: "text",
+    //   render: (value) => {
+    //     const variants = {
+    //       active: "default",
+    //       low_stock: "secondary", 
+    //       no_stock: "destructive",
+    //     };
+    //     return <Badge variant={variants[value]} className='py-1 rounded-xl text-white'>{value.replace('_', ' ')}</Badge>;
+    //   },
+    // },
   ]; 
   
 export const oldBranchesColumns = [
@@ -200,55 +193,55 @@ export const oldBranchesColumns = [
   ];
 
 export  const employeeColumns = [
+    // {
+    //   key: "name",
+    //   label: "Employee",
+    //   sortable: true,
+    //   filterable: true,
+    //   render: (value, row) => (
+    //     <div className="flex items-center gap-3">
+    //       <Avatar className="h-10 w-10">
+    //         <AvatarImage src={row.avatarUrl} alt={value} />
+    //         <AvatarFallback 
+    //           className="font-semibold bg-slate-100"
+    //         >
+    //           {getInitials(value)}
+    //         </AvatarFallback>
+    //       </Avatar>
+    //       <div>
+    //         <div className="font-medium">{value}</div>
+    //         <div className="text-sm text-muted-foreground">{row.id}</div>
+    //       </div>
+    //     </div>
+    //   ),
+    // },
     {
-      key: "name",
+      key: "user_detail",
       label: "Employee",
       sortable: true,
       filterable: true,
-      render: (value, row) => (
-        <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10">
-            <AvatarImage src={row.avatarUrl} alt={value} />
-            <AvatarFallback 
-              className="font-semibold bg-slate-100"
-            >
-              {getInitials(value)}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <div className="font-medium">{value}</div>
-            <div className="text-sm text-muted-foreground">{row.id}</div>
-          </div>
-        </div>
-      ),
     },
-    {
-      key: "email",
-      label: "Email",
-      sortable: true,
-      filterable: true,
-    },
-    {
-      key: "phone",
-      label: "Phone",
-      sortable: true,
-      filterable: true,
-    },
-    {
-      key: "role",
-      label: "Role",
-      sortable: true,
-      filterable: true,
-      render: (value) => (
-        <Badge variant="outline">{value}</Badge>
-      ),
-    },
-    {
-      key: "branch",
-      label: "Branch",
-      sortable: true,
-      filterable: true,
-    },
+    // {
+    //   key: "phone",
+    //   label: "Phone",
+    //   sortable: true,
+    //   filterable: true,
+    // },
+    // {
+    //   key: "role",
+    //   label: "Role",
+    //   sortable: true,
+    //   filterable: true,
+    //   render: (value) => (
+    //     <Badge variant="outline">{value}</Badge>
+    //   ),
+    // },
+    // {
+    //   key: "branch",
+    //   label: "Branch",
+    //   sortable: true,
+    //   filterable: true,
+    // },
   ];  
 
 export const quotationColumns = [

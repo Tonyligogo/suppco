@@ -17,3 +17,9 @@ export const getCart = async (axiosAuth) => {
     const response = await axiosAuth.get(`/cart/`);
     return response?.data;
 };
+
+// supplier orders
+export const getSupplierOrders = async (axiosAuth) => {
+    const response = await axiosAuth.get(`/supplierorders/`);
+    return response?.data?.results;
+};

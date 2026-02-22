@@ -46,10 +46,10 @@ export function DataTable({
   searchPlaceholder = "Search...",
   onRowAction,
   rowActions = [
-    { label: "View Details", icon: Eye, action: "view" },
-    { label: "Edit", icon: Edit, action: "edit" },
-    { label: "Export", icon: Download, action: "export" },
-    { label: "Delete", icon: Trash2, action: "delete", variant: "destructive" },
+    // { label: "View", icon: Eye, action: "view" },
+    // { label: "Edit", icon: Edit, action: "edit" },
+    // { label: "Export", icon: Download, action: "export" },
+    // { label: "Delete", icon: Trash2, action: "delete", variant: "destructive" },
   ],
   renderDetailView,
 }) {

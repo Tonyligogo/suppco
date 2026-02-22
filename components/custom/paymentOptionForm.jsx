@@ -117,7 +117,7 @@ export function PaymentOptionForm() {
             </div>
       {formData.payment_type === 'FLEXIBLE' && (
             <div className='grid gap-3'>
-                 <Label htmlFor="deposit">Flexible deposit</Label>
+                 <Label htmlFor="deposit">Minimum Deposit (%)</Label>
                 {/* Flexible deposit */}
         <div>
           <Input

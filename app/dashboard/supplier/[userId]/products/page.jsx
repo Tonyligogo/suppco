@@ -5,7 +5,7 @@ import { DataTable } from "@/components/custom/DataTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { productsData } from "@/MockData";
 import { productsColumns } from "@/TableColumns";
-import { useCreateInventory, useInventory } from "@/hooks/(inventory)/useInventoryManagement";
+import { useCreateInventory, useInventory, useProducts } from "@/hooks/(inventory)/useInventoryManagement";
 import DynamicDialog from "@/components/custom/dynamic-dialog";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { InventoryTypes } from "@/data";
 import { useCompanyInfo } from "@/hooks/(company)/useCompanyManagement";
 import { usePathname, useRouter } from "next/navigation";
 import { PaymentOptionForm } from "@/components/custom/paymentOptionForm";
+import TableSkeleton from "@/components/custom/table-skeleton";
 
 const renderProductDetails = (product) => (
   <div className="space-y-6">
@@ -22,10 +23,9 @@ const renderProductDetails = (product) => (
           <CardTitle className="text-lg">Basic Information</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <div><strong>Product ID:</strong> {product.id}</div>
+          <div><strong>Product Ref:</strong> {product.reference}</div>
           <div><strong>SKU:</strong> {product.sku}</div>
-          <div><strong>Category:</strong> {product.category}</div>
-          <div><strong>Supplier:</strong> {product.supplier}</div>
+          <div><strong>Supplier:</strong> {product.company}</div>
           <div><strong>Branch:</strong> {product.branch}</div>
         </CardContent>
       </Card>
@@ -35,10 +35,8 @@ const renderProductDetails = (product) => (
           <CardTitle className="text-lg">Stock & Pricing</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <div><strong>Current Stock:</strong> {product.stock} units</div>
-          <div><strong>Low Stock Alert:</strong> {product.lowStockThreshold} units</div>
-          <div><strong>Price:</strong> ${product.price.toFixed(2)}</div>
-          <div><strong>Last Restocked:</strong> {product.lastRestocked}</div>
+          <div><strong>Current Stock:</strong> {product.quantity}</div>
+          <div><strong>Price:</strong> Ksh {Number(product.price).toFixed(2)}</div>
         </CardContent>
       </Card>
     </div>
@@ -48,9 +46,11 @@ const renderProductDetails = (product) => (
         <CardTitle className="text-lg">Product Details</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        <div><strong>Description:</strong> {product.description}</div>
-        <div><strong>Dimensions:</strong> {product.dimensions}</div>
-        <div><strong>Weight:</strong> {product.weight}</div>
+        <div><strong>Manufacturer:</strong> {product.specifications?.manufacturer}</div>
+        <div><strong>Minimum order quantity:</strong> {product.specifications?.minimum_order_quantity}</div>
+        <div><strong>Units of Measurement:</strong> {product.specifications?.units_of_measurement}</div>
+        <div><strong>Description:</strong> {product.specifications?.description}</div>
+        <div><strong>Dimensions:</strong> {product.specifications?.dimensions}</div>
       </CardContent>
     </Card>
   </div>
@@ -63,6 +63,7 @@ export default function Products() {
   const router = useRouter()
   const {mutate:createInventory} = useCreateInventory();
   const { data: companyInfo } = useCompanyInfo();
+  const {data:products, isPending} = useProducts()
   const options = inventoryTypes.map((type)=>{
     return {
       label:type,
@@ -81,7 +82,6 @@ export default function Products() {
   ];
   const {data:inventories} = useInventory()
   const handleRowAction = (action, row) => {
-    console.log(`Action: ${action}`, row);
     // Handle different actions here
     switch (action) {
       case "edit":
@@ -102,6 +102,14 @@ export default function Products() {
     }
     createInventory({data})
   }; 
+  if(isPending){
+    return (
+      <div className="pt-6">
+            <Header title='Products & Inventory' description='Manage your product catalog and track inventory levels across all branches.'/>
+            <TableSkeleton/>
+      </div>
+    )
+  }
 
   return (
     <div className="py-6 space-y-6">
@@ -129,7 +137,7 @@ export default function Products() {
         submitText="Create Inventory"
       />
       <DataTable
-        data={productsData}
+        data={products}
         columns={productsColumns}
         title="Product Inventory"
         searchPlaceholder="Search products..."

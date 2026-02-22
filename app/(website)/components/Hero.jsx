@@ -16,7 +16,7 @@ const Hero = () => {
           className="w-full h-full object-cover object-center absolute inset-0"
         />
         <div className="absolute inset-0 bg-gray-900/90" />
-        <div className="relative z-10 flex h-full items-center justify-center md:max-w-7xl md:mx-auto px-4">
+        <div className="relative z-10 flex h-full items-center justify-center md:max-w-7xl md:mx-auto pt-10 px-4">
           <div>
             <div className="max-w-4xl text-white md:text-center space-y-5">
               <p className="hidden md:block font-semibold text-sm">
@@ -62,22 +62,22 @@ const Hero = () => {
                 </Link>
               </Button>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-10">
-              <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-                <span className="text-2xl font-bold block">200+ Suppliers</span>
-                <span>onboarded</span>
-              </div>
-              <div className="bg-white/10 backdrop-blur rounded-lg p-4">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-10">
+              <div className="col-span-2 md:col-span-1 text-center md:text-left bg-white/10 backdrop-blur rounded-lg p-4">
                 <span className="text-2xl font-bold block">
-                  1k+ assets/materials
+                  1000+ <br className="md:hidden" /> assets/materials
                 </span>
-                <span>verified</span>
+                <span className="hidden md:block">verified</span>
               </div>
-              <div className="bg-white/10 backdrop-blur rounded-lg p-4">
+              <div className="bg-white/10 backdrop-blur text-center md:text-left rounded-lg p-4">
+                <span className="text-2xl font-bold block">200+ <br className="md:hidden" /> Suppliers</span>
+                <span className="hidden md:block">onboarded</span>
+              </div>
+              <div className="bg-white/10 backdrop-blur text-center md:text-left rounded-lg p-4">
                 <span className="text-2xl font-bold block">
-                  500+ Contractors
+                  500+ <br className="md:hidden" /> Contractors
                 </span>
-                <span>trust us</span>
+                <span className="hidden md:block">trust us</span>
               </div>
             </div>
           </div>
