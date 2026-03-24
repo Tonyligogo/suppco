@@ -74,7 +74,7 @@ export function CompanySettings() {
     if (!formData.fiscal_year.trim()) errors.fiscal_year = "Fiscal Year is required.";
     if (!formData.kra_pin.trim()) errors.kra_pin = "KRA pin is required.";
     if (!formData.registration_number.trim()) errors.registration_number = "Registration number is required.";
-    if (!formData.vat_number.trim()) errors.vat_number = "VAT number is required.";
+    if (formData.vat_compliance && !formData.vat_number.trim()) errors.vat_number = "VAT number is required.";
 
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;

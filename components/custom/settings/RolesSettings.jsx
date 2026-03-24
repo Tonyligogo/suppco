@@ -8,26 +8,14 @@ import toast from "react-hot-toast";
 import { useCompanyInfo } from "@/hooks/(company)/useCompanyManagement";
 import LoadingComponent from "../loading-component";
 
-export const mockUsers = [
-  { id: '1', name: 'Alice Johnson', email: 'alice@example.com' },
-  { id: '2', name: 'Bob Smith', email: 'bob@example.com' },
-  { id: '3', name: 'Carol Williams', email: 'carol@example.com' },
-  { id: '4', name: 'David Brown', email: 'david@example.com' },
-  { id: '5', name: 'Eva Martinez', email: 'eva@example.com' },
-  { id: '6', name: 'Frank Lee', email: 'frank@example.com' },
-  { id: '7', name: 'Grace Kim', email: 'grace@example.com' },
-  { id: '8', name: 'Henry Chen', email: 'henry@example.com' },
-];
-
 export function RolesSettings() {
-    const {data:permissions} = useAllPermissions()
+    // const {data:permissions} = useAllPermissions()
     const {data:allRoles} = useAllRoles()
-    console.log('my permissions',permissions)
     const { data: companyInfo } = useCompanyInfo();
   const [roles, setRoles] = useState(allRoles ? allRoles :[]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [availableUsers] = useState(mockUsers);
-  const {mutate:createRole, isPending:isCreatingRole} = useCreateRole()
+  const {mutate:createRole, isPending:isCreatingRole} = useCreateRole();
+  const permissions = []
   
   const handleCreateRole = (roleData) => {
     if(!companyInfo.identity) return
@@ -56,7 +44,7 @@ export function RolesSettings() {
   };
 
 //   const totalUsers = roles.reduce((acc, role) => acc + role.users.length, 0);
-  const totalPermissions = permissions?.length;
+  const totalPermissions = 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -137,7 +125,7 @@ export function RolesSettings() {
         open={isCreateModalOpen}
         onOpenChange={setIsCreateModalOpen}
         permissions={permissions}
-        users={availableUsers}
+        users={[]}
         onCreateRole={handleCreateRole}
       />
     </div>

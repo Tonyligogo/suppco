@@ -113,7 +113,7 @@ export default function Products() {
 
   return (
     <div className="py-6 space-y-6">
-      <Header title='Products & Inventory' description='Manage your product catalog and track inventory levels across all branches.'/>
+      <Header title='Products' description='Manage your product catalog and track inventory levels across all branches.'/>
       <div className="flex w-full gap-5 flex-col md:flex-row">
         <div className="flex-1 border rounded-lg p-6">
           <div className="flex items-center gap-5 justify-between">

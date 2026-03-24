@@ -27,7 +27,7 @@ export const useCreateInventory = () => {
           queryClient.invalidateQueries({ queryKey: ["inventories"] });
           
           // I am directly setting the new data in the cache (Optimistic Update)
-          queryClient.setQueryData(["inventories", updatedData.identity], updatedData);
+          queryClient.setQueryData(["inventories", updatedData.id], updatedData);
 
           toast.success("Inventory created successfully!");
       },
