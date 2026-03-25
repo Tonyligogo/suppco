@@ -81,7 +81,7 @@ export const CreateRoleModal = ({
         </DialogHeader>
 
         <div className="flex gap-1 mb-4 p-1 bg-muted rounded-lg">
-          {(['details', 'permissions', 'users']).map((step, index) => (
+          {(['details', 'permissions']).map((step, index) => (
             <div
               key={step}
               className={cn(
@@ -130,7 +130,7 @@ export const CreateRoleModal = ({
             </div>
           )}
 
-          {activeStep === 'users' && (
+          {/* {activeStep === 'users' && (
             <div>
               <p className="text-sm text-muted-foreground mb-4">
                 Assign users to this role immediately. {selectedUsers.length} selected.
@@ -160,7 +160,7 @@ export const CreateRoleModal = ({
                 ))}
               </ScrollArea>
             </div>
-          )}
+          )} */}
         </div>
 
         <DialogFooter className="gap-2">
@@ -168,16 +168,16 @@ export const CreateRoleModal = ({
             <Button
               variant="outline"
               onClick={() =>
-                setActiveStep(activeStep === 'users' ? 'permissions' : 'details')
+                setActiveStep(activeStep === 'permissions' ? 'details' : 'permissions')
               }
             >
               Back
             </Button>
           )}
-          {activeStep !== 'users' ? (
+          {activeStep === 'details' ? (
             <Button
               onClick={() =>
-                setActiveStep(activeStep === 'details' ? 'permissions' : 'users')
+                setActiveStep('permissions')
               }
               disabled={!canProceed()}
               className="bg-accent hover:bg-accent/90 text-accent-foreground"
@@ -185,7 +185,7 @@ export const CreateRoleModal = ({
               Continue
             </Button>
           ) : null}
-          {activeStep !== 'details' ? (
+          {activeStep === 'permissions' ? (
             <Button
               onClick={handleSubmit}
               disabled={!name.trim()}

@@ -13,7 +13,7 @@ export function useAxiosAuth() {
       const token = session?.user?.token;
       
       if (status !== 'authenticated' || !token) {
-          return null; // Return null if session is loading or not authenticated
+          return null;
       }
 
       return axios.create({
@@ -22,7 +22,7 @@ export function useAxiosAuth() {
               "Authorization": `Token ${token}`, 
           }
       });
-  }, [session, status]); // Re-create when session or status changes
+  }, [session, status]);
 
   return axiosAuth;
 }

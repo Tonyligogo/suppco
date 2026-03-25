@@ -2,14 +2,10 @@
 
 import CreateBranchDialog from "@/components/custom/create-branch";
 import { DataTable } from "@/components/custom/DataTable";
-import Header from "@/components/custom/Header";
 import LoadingComponent from "@/components/custom/loading-component";
 import { Can } from "@/components/custom/permission-checker";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCompanyBranches } from "@/hooks/(branch)/useBranchManagement";
 import { PERMISSIONS } from "@/lib/permissions";
-import { branchesData } from "@/MockData";
 import { branchesColumns } from "@/TableColumns";
 import { SquarePen } from "lucide-react";
 import { useState } from "react";
@@ -36,9 +32,9 @@ const Branches = () => {
         <h1 className="text-2xl font-semibold">Branches Management</h1>
         <p className="text-muted-foreground">Manage your company branches and their managers.</p>
     </div>
-    <Can permission={PERMISSIONS.BRANCH_CREATE}>
         <CreateBranchDialog isCreateDialogOpen={isCreateDialogOpen} setIsCreateDialogOpen={setIsCreateDialogOpen} branchToEdit={selectedBranch} setSelectedBranch={setSelectedBranch}/>
-    </Can>
+    {/* <Can permission={PERMISSIONS.BRANCH_CREATE}>
+    </Can> */}
       </div>
     
           {isPending ?

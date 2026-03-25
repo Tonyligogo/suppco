@@ -1,18 +1,11 @@
 'use client';
 
-import Header from "@/components/custom/Header";
 import { DataTable } from "@/components/custom/DataTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { productsData } from "@/MockData";
 import { productsColumns } from "@/TableColumns";
-import { useCreateInventory, useInventory, useProducts } from "@/hooks/(inventory)/useInventoryManagement";
-import DynamicDialog from "@/components/custom/dynamic-dialog";
-import { useState } from "react";
+import { useProducts } from "@/hooks/(inventory)/useInventoryManagement";
 import { Button } from "@/components/ui/button";
-import { InventoryTypes } from "@/data";
-import { useCompanyInfo } from "@/hooks/(company)/useCompanyManagement";
 import { usePathname, useRouter } from "next/navigation";
-import { PaymentOptionForm } from "@/components/custom/paymentOptionForm";
 import TableSkeleton from "@/components/custom/table-skeleton";
 
 const renderProductDetails = (product) => (
@@ -57,30 +50,9 @@ const renderProductDetails = (product) => (
 );
 
 export default function Products() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const inventoryTypes = InventoryTypes;
   const pathname = usePathname();
   const router = useRouter()
-  const {mutate:createInventory} = useCreateInventory();
-  const { data: companyInfo } = useCompanyInfo();
-  const {data:products, isPending} = useProducts()
-  const options = inventoryTypes.map((type)=>{
-    return {
-      label:type,
-      value:type
-    }
-  })
-  const inventoryFields = [
-    { 
-      name: "name", 
-      label: "Inventory type", 
-      type: "select", 
-      required:true,
-      placeholder: "Select a type",
-      options
-    },
-  ];
-  const {data:inventories} = useInventory()
+  const {data:products, isPending} = useProducts() 
   const handleRowAction = (action, row) => {
     // Handle different actions here
     switch (action) {
@@ -95,17 +67,13 @@ export default function Products() {
         break;
     }
   };
-  const handleDataSubmit = (info) => {
-    const data = {
-      ...info,
-      company: companyInfo?.name,
-    }
-    createInventory({data})
-  }; 
   if(isPending){
     return (
       <div className="pt-6">
-            <Header title='Products & Inventory' description='Manage your product catalog and track inventory levels across all branches.'/>
+        <div className="flex border-b pb-2 flex-col md:flex-row md:justify-between md:items-center">
+            <h1 className="text-2xl font-semibold">Products</h1>
+            <p className="text-muted-foreground">Manage your product catalog across all branches.</p>
+        </div>
             <TableSkeleton/>
       </div>
     )
@@ -113,29 +81,13 @@ export default function Products() {
 
   return (
     <div className="py-6 space-y-6">
-      <Header title='Products & Inventory' description='Manage your product catalog and track inventory levels across all branches.'/>
-      <div className="flex w-full gap-5 flex-col md:flex-row">
-        <div className="flex-1 border rounded-lg p-6">
-          <div className="flex items-center gap-5 justify-between">
-          <p className="text-muted-foreground text-lg">Inventory</p>
-          <Button onClick={() => setIsModalOpen(true)}>Add Inventory</Button>
-          </div>
-          <p className="text-xl font-bold">
-            {inventories?.length ?? null}
-          </p>
-        </div>
-      </div>
-      <Button onClick={() => router.push(`${pathname}/create`)}>Add Product</Button>
-      <PaymentOptionForm/>
-      <DynamicDialog
-        isOpen={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        title="Create Inventory"
-        description="Fill in the details below to create a new inventory."
-        fields={inventoryFields}
-        onSubmit={handleDataSubmit}
-        submitText="Create Inventory"
-      />
+      <div className="flex border-b pb-2 flex-col md:flex-row md:justify-between md:items-center">
+        <div>
+        <h1 className="text-2xl font-semibold">Products</h1>
+        <p className="text-muted-foreground">Manage your product catalog across all branches.</p>
+    </div>
+    <Button onClick={() => router.push(`${pathname}/create`)}>Add Product</Button>
+      </div>      
       <DataTable
         data={products}
         columns={productsColumns}
