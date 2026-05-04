@@ -5,6 +5,7 @@ import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { SessionProvider } from "next-auth/react";
 import { PermissionsProvider } from "@/providers/PermissionsProvider";
 import { AuthProvider } from "@/providers/AuthContextProvider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,12 +28,14 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <SessionProvider>
           <AuthProvider>
-              <ReactQueryProvider>
-            <PermissionsProvider>
-              <ToasterProvider position="top-center" />
-                <main>{children}</main>
-            </PermissionsProvider>
-              </ReactQueryProvider>
+            <ReactQueryProvider>
+              <PermissionsProvider>
+                <TooltipProvider>
+                  <ToasterProvider position="top-center" />
+                  <main>{children}</main>
+                </TooltipProvider>
+              </PermissionsProvider>
+            </ReactQueryProvider>
           </AuthProvider>
         </SessionProvider>
       </body>
