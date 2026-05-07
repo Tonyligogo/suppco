@@ -1,6 +1,5 @@
 'use client';
 
-import { ClassificationSelector } from "@/components/custom/classification-selector";
 import DynamicDialog from "@/components/custom/dynamic-dialog";
 import LoadingComponent from "@/components/custom/loading-component";
 import { PaymentOptionsSelector } from "@/components/custom/payment-option-selector";
@@ -9,33 +8,11 @@ import { ProductSpecificFields } from "@/components/custom/productSpecificFields
 import { resolveProductFields } from "@/components/custom/resolveProductFields";
 import { validateProductFields } from "@/components/custom/validateProductFields";
 import { Button } from "@/components/ui/button";
-import { Layers, SandSublayerItems, Sublayers } from "@/data";
 import { useCreateLayer, useCreateProduct, useCreateSubLayer, useCreateSubLayerItem, useInventory, useLayers } from "@/hooks/(inventory)/useInventoryManagement";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { StepIndicator } from "./components/step-indicator";
 import { ClassificationStep } from "./components/classification-selector";
-
-const layersList = Layers.map((layer)=>{
-    return {
-      label:layer,
-      value:layer
-    }
-  })
-
-const sublayersList = Sublayers.map((sublayer)=>{
-    return {
-      label:sublayer,
-      value:sublayer
-    }
-  })
-
-  const itemsList = SandSublayerItems.map((item)=>{
-    return {
-      label:item,
-      value:item
-    }
-  })
 
   const STEPS = [
   { number: 1, label: "Classification" },
@@ -67,12 +44,17 @@ export default function CreateProductPage() {
     }
   }) || [];
 
-  const sublayerOptions = layers && layers[0]?.sublayers?.map((sublayer)=>{
-    return {
-      label:sublayer.name,
-      value:sublayer.reference
-    }
-  })
+  const selectedLayer = layers?.find((layer) => layer.name === classification.layer)
+  const selectedSubLayer = selectedLayer?.sublayers?.find((sublayer) => sublayer.name === classification.sublayer)
+
+const sublayerOptions = selectedLayer?.sublayers?.map((sublayer) => ({
+  label: sublayer.name,
+  value: sublayer.reference,
+})) ?? []
+const sublayerItemOptions = selectedSubLayer?.sublayeritems?.map((item) => ({
+  label: item.name,
+  value: item.reference,
+})) ?? []
 
 const {mutate:createLayer} = useCreateLayer();
 const {mutate:createSublayer} = useCreateSubLayer();
@@ -139,10 +121,9 @@ createProduct({data});
    { 
       name: "name", 
       label: "Layer", 
-      type: "select", 
+      type: "text", 
       required:true,
-      placeholder: "Select a layer",
-      options:layersList
+      placeholder: "e.g. Aggregate"
     },
     { 
       name: "inventory", 
@@ -161,10 +142,9 @@ createProduct({data});
   {
     name: "name",
     label: "Sublayer name",
-    type: "select",
+    type: "text",
     required: true,
-    placeholder: "Select a sublayer",
-    options:sublayersList
+    placeholder: "e.g. Sand"
   },
   {
     name: "layer",
@@ -183,10 +163,9 @@ createProduct({data});
         {
     name: "name",
     label: "Item name",
-    type: "select",
+    type: "text",
     required: true,
-    placeholder: "Select an item",
-    options:itemsList
+    placeholder: "e.g. River sand"
   },
   {
     name: "sublayer",
@@ -229,7 +208,6 @@ createProduct({data});
               classification={classification}
               onChange={update => {
                 setClassification(update);
-              console.log('new update',update)
               }}
               onContinue={() => {
                 setCurrentStep(2)
@@ -237,8 +215,8 @@ createProduct({data});
               }}
               onOpenDialog={setDialogType}
               layerOptions={layerOptions}
-              sublayerOptions={sublayersList}
-              itemOptions={itemsList}
+              sublayerOptions={sublayerOptions}
+              itemOptions={sublayerItemOptions}
             />
           )}
           {currentStep === 2 && (

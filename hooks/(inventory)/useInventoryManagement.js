@@ -18,23 +18,26 @@ export const useCreateInventory = () => {
   const axiosAuth = useAxiosAuth();
     
   return useMutation({
-      // The mutation function receives the variables passed to mutate()
-      mutationFn: ({data}) => createInventory(data, axiosAuth),
-      
-      onSuccess: (updatedData) => {
-          // 1. Invalidate the old query cache
-          // This forces the useUserInfo hook to refetch the latest data
-          queryClient.invalidateQueries({ queryKey: ["inventories"] });
-          
-          // I am directly setting the new data in the cache (Optimistic Update)
-          queryClient.setQueryData(["inventories", updatedData.id], updatedData);
+      mutationFn: ({ data }) => createInventory(data, axiosAuth),
 
-          toast.success("Inventory created successfully!");
-      },
-      
-      onError: () => {
-          toast.error(`Inventory creation failed: 'Server error'`);
-      },
+    onSuccess: (newInventory) => {
+      // Add the new item directly into the list cache — instant UI update
+      queryClient.setQueryData(
+        ["inventories"],
+        (prev) => {
+          return prev ? [...prev, newInventory] : [newInventory];
+        }
+      );
+      // Pre-populate the detail query so navigating to it is instant
+      queryClient.setQueryData(["inventories", newInventory.id], newInventory);
+
+      toast.success("Inventory created successfully!");
+    },
+
+    onError: (error) => {
+      const message = error?.response?.data?.message ?? "Server error";
+      toast.error(`Inventory creation failed: ${message}`);
+    },
   });
 };
 
@@ -43,23 +46,25 @@ export const useUpdateInventory = () => {
   const axiosAuth = useAxiosAuth();
     
   return useMutation({
-      // The mutation function receives the variables passed to mutate()
-      mutationFn: ({ identity, formData }) => updateInventory(identity, formData, axiosAuth),
-      
-      onSuccess: (updatedData, variables) => {
-          // 1. Invalidate the old query cache
-          // This forces the useUserInfo hook to refetch the latest data
-          queryClient.invalidateQueries({ queryKey: ["inventories"] });
-          
-          // I am directly setting the new data in the cache (Optimistic Update)
-          queryClient.setQueryData(["inventories", variables.identity], updatedData);
+      mutationFn: ({ id, formData }) => updateInventory(id, formData, axiosAuth),
 
-          toast.success("Inventory updated successfully!");
-      },
-      
-      onError: () => {
-          toast.error(`Inventory update failed: 'Server error'`);
-      },
+      onSuccess: (updatedItem) => {
+      // Update the item inside the list cache without a refetch
+      queryClient.setQueryData(
+        ["inventories"],
+        (prev) =>
+          prev?.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+      );
+      // Update the detail cache too
+      queryClient.setQueryData(["inventories", updatedItem.id], updatedItem);
+
+      toast.success("Inventory updated successfully!");
+    },
+
+    onError: (error) => {
+      const message = error?.response?.data?.message ?? "Server error";
+      toast.error(`Update failed: ${message}`);
+    },
   });
 };
 // create layer
@@ -105,20 +110,23 @@ export const useCreateLayer = () => {
       // The mutation function receives the variables passed to mutate()
       mutationFn: ({data}) => createLayer(data, axiosAuth),
       
-      onSuccess: (updatedData) => {
-          // 1. Invalidate the old query cache
-          // This forces the useUserInfo hook to refetch the latest data
-          queryClient.invalidateQueries({ queryKey: ["layers"] });
-          
-          // I am directly setting the new data in the cache (Optimistic Update)
-          queryClient.setQueryData(["layers", updatedData.identity], updatedData);
+      onSuccess: (newLayer) => {
+      // Add the new item directly into the list cache — instant UI update
+      queryClient.setQueryData(
+        ["layers"],
+        (prev) => {
+          return prev ? [...prev, newLayer] : [newLayer];
+        }
+      );
+      // Pre-populate the detail query so navigating to it is instant
+      queryClient.setQueryData(["layers", newLayer.id], newLayer);
+      toast.success("Layer created successfully!");
+    },
 
-          toast.success("Layer created successfully!");
-      },
-      
-      onError: () => {
-          toast.error(`Layer creation failed. Please try again after a while.`);
-      },
+    onError: (error) => {
+      const message = error?.response?.data?.message ?? "Server error";
+      toast.error(`Layer creation failed: ${message}`);
+    },
   });
 };
 // layers
@@ -139,20 +147,23 @@ export const useCreateSubLayer = () => {
       // The mutation function receives the variables passed to mutate()
       mutationFn: ({data}) => createSubLayer(data, axiosAuth),
       
-      onSuccess: (updatedData) => {
-          // 1. Invalidate the old query cache
-          // This forces the useUserInfo hook to refetch the latest data
-          queryClient.invalidateQueries({ queryKey: ["sublayers"] });
-          
-          // I am directly setting the new data in the cache (Optimistic Update)
-          queryClient.setQueryData(["sublayers", updatedData.identity], updatedData);
+      onSuccess: (newSubLayer) => {
+      // Add the new item directly into the list cache — instant UI update
+      queryClient.setQueryData(
+        ["sublayers"],
+        (prev) => {
+          return prev ? [...prev, newSubLayer] : [newSubLayer];
+        }
+      );
+      // Pre-populate the detail query so navigating to it is instant
+      queryClient.setQueryData(["sublayers", newSubLayer.id], newSubLayer);
+      toast.success("Sublayer created successfully!");
+    },
 
-          toast.success("SubLayer created successfully!");
-      },
-      
-      onError: () => {
-          toast.error(`SubLayer creation failed. Please try again after a while.`);
-      },
+    onError: (error) => {
+      const message = error?.response?.data?.message ?? "Server error";
+      toast.error(`Sublayer creation failed: ${message}`);
+    },
   });
 };
 // sublayers
@@ -173,20 +184,23 @@ export const useCreateSubLayerItem = () => {
       // The mutation function receives the variables passed to mutate()
       mutationFn: ({data}) => createSubLayerItem(data, axiosAuth),
       
-      onSuccess: (updatedData) => {
-          // 1. Invalidate the old query cache
-          // This forces the useUserInfo hook to refetch the latest data
-          queryClient.invalidateQueries({ queryKey: ["sublayeritems"] });
-          
-          // I am directly setting the new data in the cache (Optimistic Update)
-          queryClient.setQueryData(["sublayeritems", updatedData.identity], updatedData);
+      onSuccess: (newSublayerItem) => {
+      // Add the new item directly into the list cache — instant UI update
+      queryClient.setQueryData(
+        ["sublayeritems"],
+        (prev) => {
+          return prev ? [...prev, newSublayerItem] : [newSublayerItem];
+        }
+      );
+      // Pre-populate the detail query so navigating to it is instant
+      queryClient.setQueryData(["sublayeritems", newSublayerItem.id], newSublayerItem);
+      toast.success("Sublayer item created successfully!");
+    },
 
-          toast.success("Sublayer item created successfully!");
-      },
-      
-      onError: () => {
-          toast.error(`Sublayer item creation failed. Please try again after a while.`);
-      },
+    onError: (error) => {
+      const message = error?.response?.data?.message ?? "Server error";
+      toast.error(`Sublayer item creation failed: ${message}`);
+    },
   });
 };
 // sublayer items

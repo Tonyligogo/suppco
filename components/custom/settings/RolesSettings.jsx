@@ -14,10 +14,7 @@ export function RolesSettings() {
     const { data: companyInfo } = useCompanyInfo();
   const [roles, setRoles] = useState(allRoles ? allRoles :[]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const {mutate:createRole, isPending:isCreatingRole} = useCreateRole();
-  // const permissions = []
-  console.log(permissions)
-  
+  const {mutate:createRole, isPending:isCreatingRole} = useCreateRole();  
   const handleCreateRole = (roleData) => {
     if(!companyInfo.identity) return
     const data = {

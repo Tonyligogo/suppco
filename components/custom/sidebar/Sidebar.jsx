@@ -23,10 +23,12 @@ import { getMenuItems } from "@/lib/SidebarMenus";
 import SidebarSkeleton from "./SidebarSkeleton";
 import { useIsMobile } from "@/hooks/use-mobile";
 import NavUser from "./NavUser";
+import { useCompanyInfo } from "@/hooks/(company)/useCompanyManagement";
 
 const Sidebar = () => {
   const pathname = usePathname();
   const { userId } = useParams();
+  const { data: companyInfo } = useCompanyInfo();
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const tenant = pathname.split("/")[2];
@@ -69,6 +71,10 @@ const Sidebar = () => {
         </div>
       </div>
       <div>
+      {tenant && tenant !== 'admin' && companyInfo && !companyInfo.registration_number && <div className="bg-amber-50 rounded-lg p-4 mb-8">
+        <p>Your company profile is incomplete!</p>
+        <small className="block mt-4">Go to <a href={`/dashboard/${tenant}/${userId}/settings`} className="text-blue-500 underline">Settings</a> to complete it.</small>
+      </div>}
         <ul>
           <li>
             <a href="/suppco-market" target="_blank" rel="noopener noreferrer"
@@ -92,7 +98,7 @@ const Sidebar = () => {
             }}
             selected={pathname.includes("/settings")}
           />
-          <SidebarItem
+          {/* <SidebarItem
             key="contact"
             item={{
               title: "Contact us",
@@ -100,10 +106,11 @@ const Sidebar = () => {
               icon: CircleQuestionMark,
             }}
             selected={pathname === "/contact"}
-          />
+          /> */}
         </ul>
         <NavUser isMobile={isMobile} tenant={tenant} userId={userId}/>
       </div>
+      
     </div>
   );
   return (
