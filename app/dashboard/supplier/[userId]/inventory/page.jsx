@@ -11,17 +11,17 @@ import {
 import { Pencil } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { EditInventoryDialog } from "./components/EditInventoryDialog";
+import TableSkeleton from "@/components/custom/table-skeleton";
 
 const Inventory = () => {
-  const { data: inventories } = useInventory();
+  const { data: inventories, isPending: isInventoriesPending } = useInventory();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { mutate: createInventory } = useCreateInventory();
   const { data: companyInfo } = useCompanyInfo();
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
    const [editItem, setEditItem] = useState(null)
-  console.log(inventories)
-  const rowsPerPage = 5;
+  const rowsPerPage = 20;
   // Filtered Data
   const filteredData = useMemo(() => {
     return inventories?.filter((item) => {
@@ -56,6 +56,21 @@ const Inventory = () => {
     };
     createInventory({ data });
   };
+
+  if (isInventoriesPending) {
+      return (
+        <div className="pt-6">
+          <div className="flex border-b pb-2 flex-col md:flex-row md:justify-between md:items-center">
+            <h1 className="text-2xl font-semibold">Inventory</h1>
+            <p className="text-muted-foreground">
+              Manage your inventory across all branches.
+            </p>
+          </div>
+          <TableSkeleton />
+        </div>
+      );
+    }
+
   return (
     <div className="py-6 space-y-6">
       <Header

@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAxiosAuth } from "../useAxiosAuth";
-import { createPaymentOption, getPaymentOptions } from "@/app/api/payment";
+import { createPaymentOption, getPaymentOptions, updatePaymentOption } from "@/app/api/payment";
 import { createCart, createOrder, getCart, getOrders, getSupplierOrders } from "@/app/api/orders";
+import toast from "react-hot-toast";
 
 export function useCreatePaymentOption() {
   const queryClient = useQueryClient();
@@ -10,15 +11,37 @@ export function useCreatePaymentOption() {
   return useMutation({
     mutationFn: (data) => createPaymentOption(data, axiosAuth),
     onSuccess: () => {
-      queryClient.invalidateQueries(['payment-options']);
+      queryClient.invalidateQueries(['paymentoptions']);
     },
   });
 }
 
+export const useUpdatePaymentOption = () => {
+  const queryClient = useQueryClient();
+  const axiosAuth = useAxiosAuth();
+
+  return useMutation({
+    mutationFn: ({productRef, ...data}) =>
+      updatePaymentOption(data, axiosAuth),
+
+    onSuccess: (updatedOption, variables) => {
+      if (variables.productRef) {
+        queryClient.invalidateQueries({
+          queryKey: ["products", variables.productRef],
+        });
+      }
+    },
+
+    onError: () => {
+      toast.error("Failed to update payment option. Please try again later!");
+    },
+  });
+};
+
 export const usePaymentOptions = () => {
   const axiosAuth = useAxiosAuth();
   return useQuery({
-    queryKey: ["payment-options"],
+    queryKey: ["paymentoptions"],
     queryFn:()=> getPaymentOptions(axiosAuth),
     enabled:!!axiosAuth,
   });

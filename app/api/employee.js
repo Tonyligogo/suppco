@@ -8,6 +8,16 @@ export const getEmployees = async (axiosAuth) => {
     return response?.data?.results;
 };
 
+export const assignEmployeeToBranch = async (axiosAuth, formData) => {
+    const response = await axiosAuth.post(`/employees/assign/`, formData);
+    return response?.data;
+};
+
+export const unassignEmployee = async (axiosAuth, formData) => {
+  const response = await axiosAuth.post(`/employees/unassign/`, formData);
+  return response?.data;
+};
+
 export const updateBranchInfo = async (identity, formData, axiosAuth) => {
     const response = await axiosAuth.patch(`/branches/${identity}/`, formData); 
     return response?.data;

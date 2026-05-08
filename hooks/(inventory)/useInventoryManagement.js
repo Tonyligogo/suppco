@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAxiosAuth } from "../useAxiosAuth";
 import toast from "react-hot-toast";
 import { createInventory, createLayer, createSubLayer, createSubLayerItem, getInventories, getLayers, getSubLayerItems, getSubLayers, updateInventory } from "@/app/api/inventory";
-import { createProduct, getProducts } from "@/app/api/products";
+import { createProduct, getProductDetail, getProducts } from "@/app/api/products";
 
 export const useInventory = () => {
   const axiosAuth = useAxiosAuth();
@@ -98,6 +98,14 @@ export const useProducts = () => {
     queryKey: ["products"],
     queryFn:()=> getProducts(axiosAuth),
     enabled:!!axiosAuth,
+  });
+};
+export const useProductDetail = (productId) => {
+  const axiosAuth = useAxiosAuth();
+  return useQuery({
+    queryKey: ["products", productId],
+    queryFn:()=> getProductDetail(productId, axiosAuth),
+    enabled: !!productId && !!axiosAuth,
   });
 };
 
