@@ -34,7 +34,7 @@ const Supplier = () => {
         </div>
         <div className="space-y-5">
           <div>
-            <p className="text-lg text-muted-foreground">Quick Sales Analytics</p>
+            {/* <p className="text-lg text-muted-foreground">Quick Sales Analytics</p> */}
             {/* <div className="mt-4 flex flex-col lg:flex-row gap-4">
               <div className="flex-1 space-y-5">
                 <Widget title="Total Sales" value="Ksh 120,000" />
@@ -46,7 +46,7 @@ const Supplier = () => {
             </div> */}
           </div>
           <div>
-            <p className="text-lg text-muted-foreground">Quick Orders Analytics</p>
+            {/* <p className="text-lg text-muted-foreground">Quick Orders Analytics</p> */}
             {/* <div className="mt-4 flex flex-col lg:flex-row gap-4">
               <div className="flex-1 space-y-5">
                 <Widget title="Total Orders" value="Ksh 25,000" />
@@ -63,7 +63,7 @@ const Supplier = () => {
             <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-4">
               <QuickAction icon={<Plus size={20}/>} action='Add Branch' href={`/dashboard/supplier/${userId}/branches`} />
               <QuickAction icon={<Mail size={20}/>} action='Invite Employee' href={`/dashboard/supplier/${userId}/employees`} />
-              <QuickAction icon={<Plus size={20}/>} action='Add Inventory' href={`/dashboard/supplier/${userId}/products`} />
+              <QuickAction icon={<Plus size={20}/>} action='Add Inventory' href={`/dashboard/supplier/${userId}/inventory`} />
               <QuickAction icon={<Eye size={20}/>} action='View quotes' href={`/dashboard/supplier/${userId}/quotations`} />
             </div>
           </div>

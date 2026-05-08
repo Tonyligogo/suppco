@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -23,12 +23,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
-import { useCreatePaymentOption } from '@/hooks/(payments)/usePaymentManagement';
+import { useCreatePaymentOption, useUpdatePaymentOption } from '@/hooks/(payments)/usePaymentManagement';
 import { validatePaymentOption } from '@/utils/validatePaymentOptions';
 import { PAYMENT_TYPES } from '@/lib/paymentOptions';
 import toast from 'react-hot-toast';
+import { Pencil } from 'lucide-react';
 
-export function PaymentOptionForm() {
+export function PaymentOptionForm({initialData = null, productRef = null}) {
+  const isEditMode = !!initialData;
+  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     payment_type: '',
@@ -38,144 +41,149 @@ export function PaymentOptionForm() {
   });
 
   const [errors, setErrors] = useState({});
-  const { mutate, isLoading } = useCreatePaymentOption();
+  const { mutate: createMutate, isPending: isCreating } = useCreatePaymentOption();
+  const { mutate: updateMutate, isPending: isUpdating } = useUpdatePaymentOption();
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name || '',
+        payment_type: initialData.payment_type || '',
+        min_deposit_percentage: initialData.min_deposit_percentage || 0,
+        description: initialData.description || '',
+        is_active: initialData.is_active ?? true,
+      });
+    }
+  }, [initialData, open]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const validation = validatePaymentOption(formData);
     if (!validation.isValid) {
       setErrors(validation.errors);
       return;
     }
 
-    mutate(formData, {
+    const updatedPayload = {
+    ...initialData,
+    ...formData
+  };
+
+    const mutation = isEditMode ? updateMutate : createMutate;
+    const payload = isEditMode ? {...updatedPayload, productRef: productRef} : formData;
+    mutation(payload, {
       onSuccess: () => {
-        toast.success('Payment option created')
+        toast.success(isEditMode ? 'Payment option updated' : 'Payment option created');
+        setOpen(false);
       },
-      onError: () => {
-        toast.error('Failed to create Payment option. Try again later!')
+      onError: (error) => {
+        const apiMessage = error?.response?.data?.message || error?.response?.data?.detail;
+        toast.error('Something went wrong. Please try again.');
+        console.error('Payment option:', apiMessage);
       },
     });
   };
 
   return (
-    <Dialog>
-      <form>
-        <DialogTrigger asChild>
-          <Button variant="outline">Add Payment Option</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        {isEditMode ? (
+          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+            <Pencil className="h-4 w-4" />
+          </Button>
+        ) : (
+          <Button variant="outline">
+            <Plus className="mr-2 h-4 w-4" /> Add Payment Option
+          </Button>
+        )}
+      </DialogTrigger>
+      
+      <DialogContent className="sm:max-w-[425px]">
+        <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Create payment option</DialogTitle>
+            <DialogTitle>{isEditMode ? 'Edit' : 'Create'} payment option</DialogTitle>
             <DialogDescription>
-              Create a payment option here, to be used when creating a product.
+              {isEditMode ? 'Modify the details for this payment option.' : 'Define a new payment structure for your products.'}
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4">
-            <div className="grid gap-3">
-              <Label htmlFor="name">Payment option name</Label>
-              {/* Name */}
-      <div>
-        <Input
-          placeholder="Payment option name"
-          id='name'
-          value={formData.name}
-          onChange={e => setFormData({ ...formData, name: e.target.value })}
-        />
-        {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
-      </div>
+          
+          <div className="grid gap-4 py-4">
+            {/* Name Field */}
+            <div className="grid gap-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={e => setFormData({ ...formData, name: e.target.value })}
+              />
+              {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
             </div>
-            <div className="grid gap-3">
-              <Label htmlFor="payment_type">Payment type</Label>
-               {/* Payment type */}
-      <div>
-        <Select
-          value={formData.payment_type}
-          id='payment_type'
-          onValueChange={value =>
-            setFormData({
-              ...formData,
-              payment_type: value,
-              min_deposit_percentage: 0,
-            })
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select payment type" />
-          </SelectTrigger>
-          <SelectContent>
-            {PAYMENT_TYPES.map(opt => (
-              <SelectItem key={opt.value} value={opt.value}>
-                {opt.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {errors.payment_type && (
-          <p className="text-sm text-destructive">{errors.payment_type}</p>
-        )}
-      </div>
+
+            {/* Payment Type Selection */}
+            <div className="grid gap-2">
+              <Label htmlFor="payment_type">Type</Label>
+              <Select
+                value={formData.payment_type}
+                onValueChange={value => setFormData({ ...formData, payment_type: value, min_deposit_percentage: 0 })}
+              >
+                <SelectTrigger id="payment_type">
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PAYMENT_TYPES.map(opt => (
+                    <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-      {formData.payment_type === 'FLEXIBLE' && (
-            <div className='grid gap-3'>
-                 <Label htmlFor="deposit">Minimum Deposit (%)</Label>
-                {/* Flexible deposit */}
-        <div>
-          <Input
-            type="number"
-            id='deposit'
-            min={0}
-            max={100}
-            placeholder="Minimum deposit (%)"
-            value={formData.min_deposit_percentage}
-            onChange={e =>
-              setFormData({
-                ...formData,
-                min_deposit_percentage: Number(e.target.value),
-              })
-            }
-          />
-          {errors.min_deposit_percentage && (
-            <p className="text-sm text-destructive">
-              {errors.min_deposit_percentage}
-            </p>
-          )}
-        </div>
+
+            {/* Conditional Deposit Field */}
+            {formData.payment_type === 'FLEXIBLE' && (
+              <div className="grid gap-2">
+                <Label htmlFor="deposit">Min Deposit (%)</Label>
+                <Input
+                  type="number"
+                  id="deposit"
+                  value={formData.min_deposit_percentage}
+                  onChange={e => setFormData({ ...formData, min_deposit_percentage: Number(e.target.value) })}
+                />
+              </div>
+            )}
+
+            {/* Description */}
+            <div className="grid gap-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                value={formData.description}
+                onChange={e => setFormData({ ...formData, description: e.target.value })}
+              />
             </div>
-      )}
-      <div className='grid gap-3'>
-        <Label htmlFor="description">Description</Label>
-        {/* Description */}
-      <Textarea
-        placeholder="Description (optional)"
-        id='description'
-        value={formData.description}
-        onChange={e =>
-          setFormData({ ...formData, description: e.target.value })
-        }
-      />
-      </div>
-      <div className='grid gap-3'>
-        <Label htmlFor="active">Active</Label>
-        {/* Active toggle */}
-        <Switch
-          checked={formData.is_active}
-          id='active'
-          onCheckedChange={checked =>
-            setFormData({ ...formData, is_active: checked })
-          }
-        />
-      </div>
+
+            {/* Status Toggle */}
+            <div className="flex items-center justify-between space-x-2 border rounded-md p-3">
+              <Label htmlFor="active" className="flex flex-col gap-1">
+                <span>Active Status</span>
+                <span className="font-normal text-muted-foreground text-xs">Allow this option to be used in new products.</span>
+              </Label>
+              <Switch
+                id="active"
+                checked={formData.is_active}
+                onCheckedChange={checked => setFormData({ ...formData, is_active: checked })}
+              />
+            </div>
           </div>
+
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" type="button">Cancel</Button>
             </DialogClose>
-            <Button onClick={handleSubmit} type='submit' disabled={isLoading}>
-        Create Payment Option
-      </Button>
+            <Button type="submit" disabled={isCreating || isUpdating}>
+              {isEditMode ? 'Update' : 'Create'} Option
+            </Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }

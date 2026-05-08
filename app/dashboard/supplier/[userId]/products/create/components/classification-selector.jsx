@@ -93,7 +93,7 @@ export function ClassificationStep({
               </SelectTrigger>
               <SelectContent>
                 {sublayerOptions.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
+                  <SelectItem key={opt.value} value={opt.label}>
                     {opt.label}
                   </SelectItem>
                 ))}
@@ -134,7 +134,7 @@ export function ClassificationStep({
               </SelectTrigger>
               <SelectContent>
                 {itemOptions.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
+                  <SelectItem key={opt.value} value={opt.label}>
                     {opt.label}
                   </SelectItem>
                 ))}

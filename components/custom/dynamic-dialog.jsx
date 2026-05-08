@@ -30,7 +30,6 @@ const DynamicDialog = ({
 }) => {
   const [formData, setFormData] = useState({});
 
-  // Reset form when dialog opens
   useEffect(() => {
     if (isOpen) {
       const initialValues = {};
@@ -46,12 +45,8 @@ const DynamicDialog = ({
   };
 
   const handleInternalSubmit = (e) => {
-    e.preventDefault();
-    
-    // CRITICAL: Close the dialog first as requested
-    onOpenChange(false);
-    
-    // Then return the data to the parent
+    e.preventDefault();    
+    onOpenChange(false);    
     onSubmit(formData);
   };
 

@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAxiosAuth } from "../useAxiosAuth";
 import toast from "react-hot-toast";
 import { updateBranchInfo } from "@/app/api/branch";
-import { createEmployee, getEmployees } from "@/app/api/employee";
+import { assignEmployeeToBranch, createEmployee, getEmployees, unassignEmployee } from "@/app/api/employee";
 
 export const useAllEmployees = () => {
   const axiosAuth = useAxiosAuth();
@@ -60,5 +60,54 @@ export const useUpdateBranch = () => {
       onError: () => {
           toast.error(`Update failed: 'Server error'`);
       },
+  });
+};
+
+export const useAssignEmployeeToBranch = () => {
+  const queryClient = useQueryClient()
+  const axiosAuth = useAxiosAuth()
+
+  return useMutation({
+    mutationFn: (formData) => assignEmployeeToBranch(axiosAuth, formData),
+
+    onSuccess: (response, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['branch', variables.branch, 'members'] })
+
+      const msg = response?.is_head
+        ? `${response?.employee_username} assigned as branch head.`
+        : `${response?.employee_username} assigned successfully.`
+      toast.success(msg)
+    },
+
+    onError: (error) => {
+      const message =
+        error?.response?.data?.non_field_errors?.[0] ??
+        error?.response?.data?.message ??
+        'Assignment failed'
+      toast.error(message)
+    },
+  })
+}
+
+export const useUnassignEmployee = () => {
+  const queryClient = useQueryClient();
+  const axiosAuth = useAxiosAuth();
+
+  return useMutation({
+    mutationFn: (data) =>
+      unassignEmployee(axiosAuth, data),
+
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+      toast.success(`${variables.employee_username} has been unassigned.`);
+    },
+
+    onError: (error) => {
+      const message =
+        error?.response?.data?.employee_username?.[0] ??
+        error?.response?.data?.message ??
+        "Unassignment failed";
+      toast.error(message);
+    },
   });
 };

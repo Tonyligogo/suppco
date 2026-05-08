@@ -8,6 +8,11 @@ export const getProducts = async (axiosAuth) => {
     return response?.data?.results;
 };
 
+export const getProductDetail = async (productId, axiosAuth) => {
+    const response = await axiosAuth.get(`/products/${productId}/`);
+    return response?.data;
+};
+
 export const updateInventory = async (identity, formData, axiosAuth) => {
     const response = await axiosAuth.patch(`/products/${identity}/`, formData); 
     return response?.data;

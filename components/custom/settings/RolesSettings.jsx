@@ -9,14 +9,12 @@ import { useCompanyInfo } from "@/hooks/(company)/useCompanyManagement";
 import LoadingComponent from "../loading-component";
 
 export function RolesSettings() {
-    // const {data:permissions} = useAllPermissions()
+    const {data:permissions} = useAllPermissions()
     const {data:allRoles} = useAllRoles()
     const { data: companyInfo } = useCompanyInfo();
   const [roles, setRoles] = useState(allRoles ? allRoles :[]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const {mutate:createRole, isPending:isCreatingRole} = useCreateRole();
-  const permissions = []
-  
+  const {mutate:createRole, isPending:isCreatingRole} = useCreateRole();  
   const handleCreateRole = (roleData) => {
     if(!companyInfo.identity) return
     const data = {
