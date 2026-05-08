@@ -63,10 +63,10 @@ const Quotations = () => {
   return (
     <>
     {!showPreview ? 
-    <div className="space-y-6">
+    <div className="space-y-6 py-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <Header 
-          title={showRequests ? "Quote Requests" : "Quotations"} 
+          title={showRequests ? "Quotation Requests" : "Quotations"} 
           description={showRequests 
             ? "Manage incoming quote requests from contractors"
             : "Manage your quotations and track their status"
