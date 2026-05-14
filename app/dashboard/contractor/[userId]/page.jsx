@@ -1,13 +1,117 @@
-'use client'
-import { useAuth } from '@/providers/AuthContextProvider'
-import React from 'react'
+"use client";
+
+import { ChartAreaDefault } from "@/components/custom/chart-area";
+import { ChartBarLabel } from "@/components/custom/chart-bar-label";
+import Header from "@/components/custom/Header";
+import { HorizontalChartBar } from "@/components/custom/horizontal-chart-bar";
+import LoadingComponent from "@/components/custom/loading-component";
+import { useAllEmployees } from "@/hooks/(employee)/useEmployeeManagement";
+import { useProducts } from "@/hooks/(inventory)/useInventoryManagement";
+import { useSupplierOrders } from "@/hooks/(payments)/usePaymentManagement";
+import { useCompanySites } from "@/hooks/useSiteManagement";
+import { Eye, File, Mail, Package, Plus, Users, Warehouse } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 const Contractor = () => {
-  const {authData} = useAuth()
-  console.log('My auth data', authData)
+  const {userId} = useParams();
+  const {data:branches, isPending: branchesPending} = useCompanySites();
+  const {data:employees, isPending: employeesPending} = useAllEmployees();
+  const {data:orders, isPending: ordersPending} = useSupplierOrders();
+  const {data:products, isPending: productsPending} = useProducts();
   return (
-    <div>Contractor</div>
+    <div className="pt-4">
+      <Header
+        title="Overview"
+        description="Have a quick look on how everything is going"
+      />
+      <div className="h-[89vh] overflow-y-auto pr-2 pb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-5">
+        <Widget icon={<Warehouse size={20} />} title='Sites' value={branches?.length || 0} isPending={branchesPending} />
+          <Widget icon={<Users size={20} />} title='Workers' value={employees?.length || 0} isPending={employeesPending} />
+          <Widget icon={<File size={20} />} title='Orders' value={orders?.length || 0} isPending={ordersPending} />
+        </div>
+        <div className="space-y-5">
+          <div>
+            {/* <p className="text-lg text-muted-foreground">Quick Sales Analytics</p> */}
+            {/* <div className="mt-4 flex flex-col lg:flex-row gap-4">
+              <div className="flex-1 space-y-5">
+                <Widget title="Total Sales" value="Ksh 120,000" />
+                <ChartBarLabel title='Branch Perfomance' description='Weekly sales per branch' />
+              </div>
+              <div className="flex-2">
+                <ChartAreaDefault title='Total weekly sales' description='Showing total sales this week in all branches' />
+              </div>
+            </div> */}
+          </div>
+          <div>
+            {/* <p className="text-lg text-muted-foreground">Quick Orders Analytics</p> */}
+            {/* <div className="mt-4 flex flex-col lg:flex-row gap-4">
+              <div className="flex-1 space-y-5">
+                <Widget title="Total Orders" value="Ksh 25,000" />
+                <HorizontalChartBar  title='Orders breakdown' description='Weekly orders breakdown'  />
+              </div>
+              <div className="flex-2">
+                <ChartAreaDefault title='Total weekly orders' description='Showing total orders this week in all branches' />
+              </div>
+            </div> */}
+          </div>
+        <div className="">
+          <div className="border rounded-lg p-4">
+            <p className="border-b pb-2 text-lg font-semibold">Quick actions</p>
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <QuickAction icon={<Plus size={20}/>} action='Add Site' href={`/dashboard/contractor/${userId}/sites`} />
+              <QuickAction icon={<Mail size={20}/>} action='Invite Worker' href={`/dashboard/contractor/${userId}/workers`} />
+              <QuickAction icon={<Eye size={20}/>} action='View orders' href={`/dashboard/contractor/${userId}/orders`} />
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Contractor;
+
+const Widget = ({ icon, title, value, isPending }) => {
+  return (
+    <div className="flex-1 border rounded-lg p-4">
+      <div className="flex items-center">
+        <span className="mr-2 text-muted-foreground">{icon}</span>
+        <p className="text-muted-foreground text-lg">{title}</p>
+      </div>
+      <div>
+        {isPending ? (
+          <LoadingComponent/>
+        ) : 
+        <p className="text-xl font-bold">{value}</p>
+        }
+      </div>
+    </div>
+  );
+};
+
+const Notification = ({contractor}) => {
+  const date = new Date()
+  return(
+    <div className="flex items-start gap-3">
+      <div className="bg-slate-50 p-3 rounded-lg">
+        <Mail color='white' size={20}/>
+      </div>
+      <div>
+        <p>New quote received</p>
+        <p className="text-sm">{contractor}</p>
+        <p className="text-muted-foreground">{date.toLocaleString()}</p>
+      </div>
+    </div>
   )
 }
 
-export default Contractor
+const QuickAction = ({icon, action, href}) =>{
+  return(
+    <Link href={href} className="flex-1 flex gap-2 items-center justify-center border p-2 rounded-md">
+      {icon}{action}
+    </Link>
+  )
+}

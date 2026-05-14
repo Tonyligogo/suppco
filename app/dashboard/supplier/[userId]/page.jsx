@@ -26,7 +26,7 @@ const Supplier = () => {
         description="Have a quick look on how everything is going"
       />
       <div className="h-[89vh] overflow-y-auto pr-2 pb-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-5">
         <Widget icon={<Warehouse size={20} />} title='Branches' value={branches?.length || 0} isPending={branchesPending} />
           <Widget icon={<Users size={20} />} title='Employees' value={employees?.length || 0} isPending={employeesPending} />
           <Widget icon={<Package size={20} />} title='Inventory' value={products?.length || 0} isPending={productsPending} />
@@ -60,7 +60,7 @@ const Supplier = () => {
         <div className="">
           <div className="border rounded-lg p-4">
             <p className="border-b pb-2 text-lg font-semibold">Quick actions</p>
-            <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               <QuickAction icon={<Plus size={20}/>} action='Add Branch' href={`/dashboard/supplier/${userId}/branches`} />
               <QuickAction icon={<Mail size={20}/>} action='Invite Employee' href={`/dashboard/supplier/${userId}/employees`} />
               <QuickAction icon={<Plus size={20}/>} action='Add Inventory' href={`/dashboard/supplier/${userId}/inventory`} />

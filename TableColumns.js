@@ -192,6 +192,23 @@ export const oldBranchesColumns = [
     }
   ];
 
+  export const sitesColumns = [
+    {
+      key: "name",
+      label: "Site name", 
+      sortable: true,
+      filterable: true,
+      filterType: "text",
+    },
+    {
+      key: "address",
+      label: "Address", 
+      sortable: true,
+      filterable: true,
+      filterType: "text",
+    }
+  ];
+
 export  const employeeColumns = [
     // {
     //   key: "name",

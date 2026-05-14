@@ -25,11 +25,6 @@ const settingsSections = [
     icon: Building2,
   },
   {
-    id: "branches",
-    label: "Branches",
-    icon: MapPin,
-  },
-  {
     id: "roles",
     label: "Roles & Permissions",
     icon: UserLock,

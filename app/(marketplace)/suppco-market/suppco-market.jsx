@@ -9,7 +9,6 @@ import { MarketplaceProvider } from '../context/MarketplaceContext';
 import { useUrlFilters } from '../hooks/useUrlFilters';
 import { FilterSidebar } from '../components/FilterSidebar';
 import { useProducts } from '@/hooks/(inventory)/useInventoryManagement';
-import { use } from 'react'
 import { MarketplaceSkeleton } from '../components/MarketplaceSkeleton';
 
 function MarketplaceContent() {
@@ -17,7 +16,8 @@ function MarketplaceContent() {
   const [cartOpen, setCartOpen] = useState(false);
   const [compareOpen, setCompareOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const {data:products, isPending, isError} = useProducts()
+  const {data:products, isPending, isError,error} = useProducts()
+  console.log('my error', error)
 
   // Calculate active filter count for mobile badge
   const activeFilterCount = useMemo(() => {

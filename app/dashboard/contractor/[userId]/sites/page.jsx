@@ -1,95 +1,73 @@
-'use client';
+"use client";
 
+import CreateBranchDialog from "@/components/custom/create-branch";
+import CreateSiteDialog from "@/components/custom/create-site";
 import { DataTable } from "@/components/custom/DataTable";
-import Header from "@/components/custom/Header";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { branchesData } from "@/MockData";
-import { branchesColumns } from "@/TableColumns";
+import LoadingComponent from "@/components/custom/loading-component";
+import { Can } from "@/components/custom/permission-checker";
+import { BranchDetails } from "@/components/custom/settings/BranchDetails";
+import { Button } from "@/components/ui/button";
+import { useCompanySites } from "@/hooks/useSiteManagement";
+import { PERMISSIONS } from "@/lib/permissions";
+import { sitesColumns } from "@/TableColumns";
+import { Eye, SquarePen } from "lucide-react";
+import { useState } from "react";
 
-const Brnaches = () => {
-    const handleRowAction = (action, row) => {
-        console.log(`Action: ${action}`, row);
-        // Handle different actions here
-      };
-    
-      return (
-        <div className="space-y-6">
-          <Header title='Branch Management' description='Manage all branch locations, staff, and performance metrics.'/>
-    
-          <DataTable
-            data={branchesData}
-            columns={branchesColumns}
-            title="Branch Locations"
-            searchPlaceholder="Search branches..."
-            onRowAction={handleRowAction}
-            renderDetailView={renderBranchDetails}
-          />
+const Sites = () => {
+  const { data: sites, isPending } = useCompanySites();
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [selectedSite, setSelectedSite] = useState(null);
+  const handleRowAction = (action, row) => {
+    if (action === "view") {
+      setSelectedSite(row);
+    } else if (action === "invite") {
+      setSelectedSite(row);
+    } else if (action === "edit") {
+      setSelectedSite(row);
+      setIsCreateDialogOpen(true);
+    }
+  };
+
+  return (
+    <div className="space-y-6 pt-4">
+      <div className="flex border-b pb-2 flex-col md:flex-row md:justify-between md:items-center">
+        <div>
+          <h1 className="text-2xl font-semibold">Sites Management</h1>
+          <p className="text-muted-foreground">
+            Manage your company sites and people.
+          </p>
         </div>
-      )
-}
-
-export default Brnaches
-
-const renderBranchDetails = (branch) => (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Branch Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div><strong>Branch ID:</strong> {branch.id}</div>
-            <div><strong>Name:</strong> {branch.name}</div>
-            <div><strong>Manager:</strong> {branch.manager}</div>
-            <div><strong>Employees:</strong> {branch.employees}</div>
-            <div><strong>Established:</strong> {new Date(branch.established).toLocaleDateString()}</div>
-            <div><strong>Warehouse Size:</strong> {branch.warehouseSize}</div>
-          </CardContent>
-        </Card>
-  
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Contact Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div><strong>Phone:</strong> {branch.phone}</div>
-            <div><strong>Email:</strong> {branch.email}</div>
-            <div><strong>Opening Hours:</strong> {branch.openingHours}</div>
-            <div><strong>Address:</strong></div>
-            <div className="text-sm text-muted-foreground ml-4">{branch.address}</div>
-          </CardContent>
-        </Card>
+        <Can
+          permission={PERMISSIONS.SITE.CREATE}
+          fallback={<Button disabled>Create Site</Button>}
+          tooltip="You do not have permission to create a site"
+        >
+          <CreateSiteDialog
+            isCreateDialogOpen={isCreateDialogOpen}
+            setIsCreateDialogOpen={setIsCreateDialogOpen}
+            siteToEdit={selectedSite}
+            setSelectedSite={setSelectedSite}
+          />
+        </Can>
       </div>
-  
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Performance & Specialties</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <strong>Revenue:</strong>
-            <div className="grid grid-cols-2 gap-4 mt-2">
-              <div className="p-3 bg-muted/30 rounded">
-                <div className="text-sm text-muted-foreground">Monthly</div>
-                <div className="text-lg font-semibold">${branch.monthlyRevenue.toLocaleString()}</div>
-              </div>
-              <div className="p-3 bg-muted/30 rounded">
-                <div className="text-sm text-muted-foreground">Yearly</div>
-                <div className="text-lg font-semibold">${branch.yearlyRevenue.toLocaleString()}</div>
-              </div>
-            </div>
-          </div>
-          
-          <div>
-            <strong>Specialties:</strong>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {branch.specialties.map((specialty, index) => (
-                <Badge key={index} variant="outline">{specialty}</Badge>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+
+      {isPending ? (
+        <LoadingComponent />
+      ) : (
+        <DataTable
+          data={sites}
+          columns={sitesColumns}
+          title="Site Locations"
+          searchPlaceholder="Search sites..."
+          onRowAction={handleRowAction}
+          rowActions={[
+            { action: "view", label: "View Details", icon: Eye, permission: PERMISSIONS.SITE.VIEW, renderDetailView: (row) => <BranchDetails branch={row} />, },
+            { action: "edit", label: "Edit Site", icon: SquarePen, permission: PERMISSIONS.SITE.EDIT },
+          ]}
+        />
+      )}
     </div>
   );
+};
+
+export default Sites;

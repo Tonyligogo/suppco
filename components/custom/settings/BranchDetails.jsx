@@ -90,7 +90,6 @@ export function BranchDetails({ branch }) {
       {/* Actions */}
       <div className="flex flex-col md:flex-row gap-3">
         <Button>Edit Branch</Button>
-        <Button variant="outline">Invite Manager</Button>
       </div>
     </div>
   );
