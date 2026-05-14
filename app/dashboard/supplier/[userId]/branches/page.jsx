@@ -33,7 +33,7 @@ const Branches = () => {
         <div>
           <h1 className="text-2xl font-semibold">Branches Management</h1>
           <p className="text-muted-foreground">
-            Manage your company branches and their managers.
+            Manage your company branches and people.
           </p>
         </div>
         <Can

@@ -34,7 +34,7 @@ import { useState } from "react";
 import { useCreateEmployee } from "@/hooks/(employee)/useEmployeeManagement";
 import LoadingComponent from "./loading-component";
 
-export function CreateEmployee() {
+export function CreateEmployee({isWorker = false}) {
   const { data: allRoles } = useAllRoles();
   const { data: companyInfo } = useCompanyInfo();
   const [email, setEmail] = useState("");
@@ -76,16 +76,16 @@ export function CreateEmployee() {
       <DialogTrigger asChild>
         <Button type="button">
           <Plus className="mr-2 h-4 w-4" />
-          Add Employee
+          Add {isWorker ? "Worker" : "Employee"}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Add an employee</DialogTitle>
+            <DialogTitle>Add an {isWorker ? "Worker" : "Employee"}</DialogTitle>
             <DialogDescription>
-              Invite your employees to join your company on Suppco for simpler
+              Invite your {isWorker ? "workers" : "employees"} to join your company on Suppco for simpler
               management
             </DialogDescription>
           </DialogHeader>

@@ -20,8 +20,8 @@ export function FilterSidebar({
     const conditions = new Set();
     const manufacturers = new Set();
     const dynamicSpecs = {};
-    let minPrice = Infinity;
-    let maxPrice = 0;
+    let minPrice = 0;
+    let maxPrice = Infinity;
 
     products?.forEach((product) => {
       companies.add(product.company);
@@ -34,9 +34,7 @@ export function FilterSidebar({
       minPrice = Math.min(minPrice, price);
       maxPrice = Math.max(maxPrice, price);
 
-      // Extract dynamic specification fields
       Object.entries(product?.specifications).forEach(([key, value]) => {
-        // Skip known fields and complex types
         if (
           ['features', 'description', 'minimum_order_quantity', 'environmental_specifications'].includes(key)
         ) {
@@ -101,8 +99,7 @@ export function FilterSidebar({
     filters.conditions.length + 
     filters.manufacturers.length +
     Object.values(filters.specifications).flat().length +
-    (filters.priceRange[0] > filterOptions.priceRange[0] || 
-     filters.priceRange[1] < filterOptions.priceRange[1] ? 1 : 0);
+    (filters.priceRange[0] > filterOptions.priceRange[0] || filters.priceRange[1] < filterOptions.priceRange[1] ? 1 : 0);
 
   return (
     <aside className="hidden lg:block w-72 flex-shrink-0">
@@ -112,7 +109,7 @@ export function FilterSidebar({
             <Filter className="h-4 w-4 text-muted-foreground" />
             <h2 className="font-display font-semibold text-foreground">Filters</h2>
             {activeFilterCount > 0 && (
-              <Badge variant="secondary" className="text-xs">
+              <Badge variant="primary" className="text-xs">
                 {activeFilterCount}
               </Badge>
             )}
@@ -143,7 +140,7 @@ export function FilterSidebar({
                   <Slider
                     min={filterOptions.priceRange[0]}
                     max={filterOptions.priceRange[1]}
-                    step={1}
+                    step={100}
                     value={filters.priceRange}
                     onValueChange={(value) =>
                       onFilterChange({ priceRange: value })
@@ -151,8 +148,8 @@ export function FilterSidebar({
                     className="w-full"
                   />
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <span>${filters.priceRange[0].toFixed(2)}</span>
-                    <span>${filters.priceRange[1].toFixed(2)}</span>
+                    <span>{filters.priceRange[0].toFixed(2)}</span>
+                    <span>{filters.priceRange[1].toFixed(2)}</span>
                   </div>
                 </div>
               </CollapsibleContent>

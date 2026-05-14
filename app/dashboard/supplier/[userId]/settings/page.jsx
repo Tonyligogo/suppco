@@ -3,7 +3,6 @@
 import { SettingsLayout, useSettingsLayout } from "@/components/custom/settings/SettingsLayout";
 import { AccountSettings } from "@/components/custom/settings/AccountSettings";
 import { CompanySettings } from "@/components/custom/settings/CompanySettings";
-import { BranchesSettings } from "@/components/custom/settings/BranchesSettings";
 import { RolesSettings } from "@/components/custom/settings/RolesSettings";
 
 function SettingsContent() {
@@ -15,8 +14,6 @@ function SettingsContent() {
         return <AccountSettings />;
       case "company":
         return <CompanySettings />;
-      case "branches":
-        return <BranchesSettings />;
       case "roles":
         return <RolesSettings />;
       default:
